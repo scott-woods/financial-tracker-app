@@ -18,7 +18,7 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="loggedout" element={<LoggedOut />} />
+      <Route path="/loggedout" element={<LoggedOut />} />
       <Route path="/*" element={<MainRoutes />} />
     </Routes>
   )

@@ -3,6 +3,7 @@ import Layout from "../pages/Layout"
 import Home from "../pages/Home"
 import NotFound from "../pages/NotFound"
 import AuthRequired from "./AuthRequired"
+import IncomeAndExpenses from "../pages/IncomeAndExpenses"
 
 const MainRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const MainRoutes = () => {
                 <Route element={<AuthRequired />}>
                     <Route index element={<Navigate replace to="home" />} />
                     <Route path="home" element={<Home /> } />
+                    <Route path="income-and-expenses" element={<IncomeAndExpenses />} />
                 </Route>
             </Route>
         </Routes>
