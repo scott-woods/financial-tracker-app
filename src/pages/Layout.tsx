@@ -4,6 +4,7 @@ import { ThemeProvider } from "@emotion/react";
 import { Copyright } from "@mui/icons-material";
 import { Box, CssBaseline, AppBar, Toolbar, IconButton, Typography, Badge, Drawer, Divider, List, Container, Grid, Paper, ListItemText, ListItemButton, Icon } from "@mui/material";
 import LayoutNavBar from "../components/LayoutNavBar";
+import LayoutSideBar from "../components/LayoutSideBar";
 
 const Layout = () => {
 
@@ -17,9 +18,12 @@ const Layout = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
             <LayoutNavBar />
+            <LayoutSideBar />
             <Box
             component="main"
+            padding={4}
             sx={{
                 backgroundColor: (theme) =>
                 theme.palette.mode === 'light'
