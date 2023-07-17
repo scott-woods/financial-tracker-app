@@ -23,7 +23,6 @@ const Layout = () => {
             <LayoutSideBar />
             <Box
             component="main"
-            padding={4}
             sx={{
                 backgroundColor: (theme) =>
                 theme.palette.mode === 'light'

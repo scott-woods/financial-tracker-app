@@ -27,11 +27,11 @@ const LayoutSideBar = () => {
             <Box sx={{ overflow: 'auto' }}>
                 <List>
                     <MenuItem>
-                        <ListItemButton onClick={() => handleItemClicked(0, "home")} selected={selected === 0}>
+                        <ListItemButton onClick={() => handleItemClicked(0, "dashboard")} selected={selected === 0}>
                             <ListItemIcon>
                                 <Home />
                             </ListItemIcon>
-                            <ListItemText sx={{wordWrap:"break-word"}} primary="Home" />
+                            <ListItemText sx={{wordWrap:"break-word"}} primary="Dashboard" />
                         </ListItemButton>
                     </MenuItem>
                     <MenuItem>
@@ -39,7 +39,7 @@ const LayoutSideBar = () => {
                             <ListItemIcon>
                                 <CurrencyExchange />
                             </ListItemIcon>
-                            <ListItemText sx={{wordWrap:"break-word"}} primary="Income/Expenses" />
+                            <ListItemText sx={{wordWrap:"break-word"}} primary="Income & Expenses" />
                         </ListItemButton>
                     </MenuItem>
                 </List>
