@@ -24,7 +24,7 @@ const Dashboard = () => {
                     <Grid item lg={7}>
                         <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
                             <Box display="flex" justifyContent="center">
-                                <Paper sx={{padding:2, height:'100%'}}>
+                                <Paper sx={{padding:2, height:'100%'}} elevation={12}>
                                     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
                                         <Typography variant="h6">
                                             Remaining Monthly Budget
@@ -34,7 +34,7 @@ const Dashboard = () => {
                                 </Paper>
                             </Box>
                             <Box display="flex" justifyContent="center">
-                                <Paper sx={{padding:2, height:'100%'}}>
+                                <Paper sx={{padding:2, height:'100%'}} elevation={12}>
                                     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
                                         <Typography variant="h6">
                                             Remaining Daily Budget FEEF
@@ -44,7 +44,7 @@ const Dashboard = () => {
                                 </Paper> 
                             </Box>
                             <Box display="flex" justifyContent="center">
-                                <Paper sx={{padding:2, height:'100%'}}>
+                                <Paper sx={{padding:2, height:'100%'}} elevation={12}>
                                     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
                                         <Typography variant="h6">
                                             Remaining Daily Budget FEEF
@@ -57,7 +57,7 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item lg={5}>
                         <Box display="flex-block" justifyContent="center" sx={{height:'100%'}}>
-                            <Paper sx={{padding:2, height:'100%'}}>
+                            <Paper sx={{padding:2, height:'100%'}} elevation={8}>
                                 <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
                                     <Typography variant="h6">
                                         Net Worth
@@ -67,37 +67,11 @@ const Dashboard = () => {
                         </Box>
                     </Grid>
                 </Grid>
-                {/* <Grid container spacing={3} alignItems="stretch">
-                    <Grid item lg={6}>
-                        <Box display="flex" justifyContent="center">
-                            <Paper sx={{padding:2, height:'100%'}}>
-                                <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-                                    <Typography variant="h6">
-                                        Remaining Monthly Budget
-                                    </Typography>
-                                    <CircularProgressWithLabel value={100} text="$1,000" />
-                                </Box>
-                            </Paper>
-                        </Box>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <Box display="flex" justifyContent="center">
-                            <Paper sx={{padding:2, height:'100%'}}>
-                                <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-                                    <Typography variant="h6">
-                                        Remaining Daily Budget FEEF
-                                    </Typography>
-                                    <CircularProgressWithLabel value={75} text="$30" />
-                                </Box>
-                            </Paper> 
-                        </Box>
-                    </Grid>
-                </Grid> */}
             </Grid>
             <Grid item lg={12}>
                 <Grid container spacing={4} alignItems="stretch">
                     <Grid item lg={7}>
-                        <Paper sx={{padding:2, height:'100%'}}>
+                        <Paper sx={{padding:2, height:'100%'}} elevation={8}>
                             <Box display="flex" justifyContent="center" alignItems="center">
                                 <Typography variant="h1">
                                     Chart
@@ -107,7 +81,7 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item lg={5}>
                         <Stack display={"flex"} direction="row" height={"100%"} justifyContent={"space-between"}>
-                            <Paper sx={{padding:2, height:'100%', width:'100%'}}>
+                            <Paper sx={{padding:2, height:'100%', width:'100%'}} elevation={8}>
                                 <Box display="flex">
                                     <Typography variant="h6">
                                         Monthly Savings
