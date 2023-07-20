@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard"
 import NotFound from "../pages/NotFound"
 import AuthRequired from "./AuthRequired"
 import IncomeAndExpenses from "../pages/IncomeAndExpenses"
+import AssetsAndDebts from "../pages/AssetsAndDebts"
 
 const MainRoutes = () => {
     return (
@@ -14,6 +15,7 @@ const MainRoutes = () => {
                     <Route index element={<Navigate replace to="dashboard" />} />
                     <Route path="dashboard" element={<Dashboard /> } />
                     <Route path="income-and-expenses" element={<IncomeAndExpenses />} />
+                    <Route path="assets-and-debts" element={<AssetsAndDebts />} />
                 </Route>
             </Route>
         </Routes>

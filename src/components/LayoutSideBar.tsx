@@ -1,5 +1,5 @@
 import { Drawer, Toolbar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
-import { Home, CurrencyExchange } from "@mui/icons-material";
+import { Home, CurrencyExchange, Savings } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -40,6 +40,14 @@ const LayoutSideBar = () => {
                                 <CurrencyExchange />
                             </ListItemIcon>
                             <ListItemText sx={{wordWrap:"break-word"}} primary="Income & Expenses" />
+                        </ListItemButton>
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemButton onClick={() => handleItemClicked(2, "assets-and-debts")} selected={selected === 2}>
+                            <ListItemIcon>
+                                <Savings />
+                            </ListItemIcon>
+                            <ListItemText sx={{wordWrap:"break-word"}} primary="Assets & Debts" />
                         </ListItemButton>
                     </MenuItem>
                 </List>
