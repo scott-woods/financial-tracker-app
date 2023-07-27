@@ -15,7 +15,7 @@ const IncomeAndExpenses = () => {
     }
 
     return (
-        <Grid container spacing={4} sx={{height:'100%', alignContent:'flex-start'}}>
+        <Grid container spacing={4} padding={4} sx={{height:'100%', alignContent:'flex-start'}}>
             <Grid item xs={12}>
                 <IncomeAndExpensesOverview />
             </Grid>
