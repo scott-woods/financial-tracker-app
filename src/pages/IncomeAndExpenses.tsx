@@ -11,6 +11,9 @@ const IncomeAndExpenses = () => {
     //states
     const [tabIndex, setTabIndex] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
+    const [recurringIncomeList, setRecurringIncomeList] = useState([])
+    const [recurringInvestmentList, setRecurringInvestmentList] = useState([])
+    const [recurringExpenseList, setRecurringExpenseList] = useState([])
     const [totalIncome, setTotalIncome] = useState(0)
     const [totalInvestments, setTotalInvestments] = useState(0)
     const [totalExpenses, setTotalExpenses] = useState(0)
@@ -35,12 +38,15 @@ const IncomeAndExpenses = () => {
 
             if (recurringIncome.length > 0) {
                 setTotalIncome(recurringIncome.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next))
+                setRecurringIncomeList(recurringIncome)
             }
             if (recurringInvestments.length > 0) {
                 setTotalInvestments(recurringInvestments.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next))
+                setRecurringInvestmentList(recurringInvestments)
             }
             if (recurringExpenses.length > 0) {
                 setTotalExpenses(recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next))
+                setRecurringExpenseList(recurringExpenses)
             }
         }
         catch (error:any) {
@@ -79,7 +85,7 @@ const IncomeAndExpenses = () => {
                                 <Tab label="Expenses"></Tab>
                             </Tabs>
                             <Box sx={{flexGrow:1, padding:2}}>
-                                <IncomeTab show={tabIndex === 0} />
+                                <IncomeTab show={tabIndex === 0} recurringIncome={recurringIncomeList} />
                                 <InvestmentsTab show={tabIndex === 1} />
                                 <ExpensesTab show={tabIndex === 2} />
                             </Box>

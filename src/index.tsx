@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fontsource/roboto/300.css';
@@ -33,9 +32,7 @@ root.render(
       scope: "read:current_user"
     }}
     >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </Auth0Provider>
   //</React.StrictMode>
 );

@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Dashboard';
+import { Routes, Route, Navigate, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import Layout from './pages/Layout';
 import NotFound from './pages/NotFound';
 import AuthRequired from './auth/AuthRequired';
 import Login from './pages/Login';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoggedOut from './pages/LoggedOut';
-import MainRoutes from './auth/MainRoutes';
+import AssetsAndDebts from './pages/AssetsAndDebts';
+import IncomeAndExpenses from './pages/IncomeAndExpenses';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
   const { isLoading, error } = useAuth0();
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/loggedout" element={<LoggedOut />} />
+        <Route path="/*" element={<NotFound />} />
+        <Route path="/" element={<Layout />}>
+          <Route element={<AuthRequired />}>
+              <Route index element={<Navigate replace to="dashboard" />} />
+              <Route path="dashboard" element={<Dashboard /> } />
+              <Route path="income-and-expenses" element={<IncomeAndExpenses />} />
+              <Route path="assets-and-debts" element={<AssetsAndDebts />} />
+          </Route>
+        </Route>
+      </Route>
+    )
+  )
+
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/loggedout" element={<LoggedOut />} />
-      <Route path="/*" element={<MainRoutes />} />
-    </Routes>
+    <RouterProvider router={router} />
   )
 }
 
