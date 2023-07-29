@@ -9,7 +9,7 @@ const Login = () => {
         <div>
             <h1>Login</h1>
             {error && (
-                <p>Authentication Error</p>
+                <p>Authentication Error - {error.message}</p>
             )}
             {!error && isLoading && (
                 <p>Loading...</p>

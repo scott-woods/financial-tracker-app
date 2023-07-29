@@ -1,6 +1,13 @@
 import { Paper, Stack, Typography } from "@mui/material";
+import { currencyFormatter } from "../../tools/currencyFormatter";
 
-const IncomeAndExpensesOverview = () => {
+interface IIncomeAndExpensesOverviewProps {
+    totalIncome:number,
+    totalInvestments:number,
+    totalExpenses:number
+}
+
+const IncomeAndExpensesOverview = (props:IIncomeAndExpensesOverviewProps) => {
     return (
         <Paper elevation={6} sx={{display:'flex', justifyContent: 'space-around', padding:2}}>
             <Stack spacing={1}>
@@ -8,7 +15,7 @@ const IncomeAndExpensesOverview = () => {
                     Your liquid income is...
                 </Typography>
                 <Typography variant="h4" sx={{textAlign:'center', fontWeight:'bold'}}>
-                    $7083.98
+                    {currencyFormatter(props.totalIncome)}
                 </Typography>
                 <Typography variant="subtitle1" sx={{textAlign:'right', fontWeight:'light'}}>
                     per month
@@ -19,7 +26,7 @@ const IncomeAndExpensesOverview = () => {
                     You are investing...
                 </Typography>
                 <Typography variant="h4" sx={{textAlign:'center', fontWeight:'bold'}}>
-                    $950.27
+                    {currencyFormatter(props.totalInvestments)}
                 </Typography>
                 <Typography variant="subtitle1" sx={{textAlign:'right', fontWeight:'light'}}>
                     per month
@@ -30,7 +37,7 @@ const IncomeAndExpensesOverview = () => {
                     Your expenses are...
                 </Typography>
                 <Typography variant="h4" sx={{textAlign:'center', fontWeight:'bold'}}>
-                    $4445.83
+                    {currencyFormatter(props.totalExpenses)}
                 </Typography>
                 <Typography variant="subtitle1" sx={{textAlign:'right', fontWeight:'light'}}>
                     per month

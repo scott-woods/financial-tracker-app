@@ -2,6 +2,7 @@ import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import NetWorth from "../components/AssetsAndDebts/NetWorth";
 
 const AssetsAndDebts = () => {
+
     return (
         <Grid container spacing={4} padding={4}>
             <Grid item lg={7}>
