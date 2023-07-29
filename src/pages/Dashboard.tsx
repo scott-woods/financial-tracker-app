@@ -13,12 +13,16 @@ import recurringIncomesApi from "../Api/recurringIncomesApi";
 import recurringExpensesApi from "../Api/recurringExpensesApi";
 import expensesApi from "../Api/expensesApi";
 import { currencyFormatter } from "../tools/currencyFormatter";
+import { useDispatch } from "react-redux";
+import { setSelectedPage } from "../state/slices/selectedPageSlice";
 
 
 const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
 const Dashboard = () => {
     
+    const dispatch = useDispatch()
+
     const [isLoading, setIsLoading] = useState(true);
     const [monthlyBudgetState, setMonthlyBudgetState] = useState(0)
     const [remainingMonthlyBudgetState, setRemainingMonthlyBudgetState] = useState(0)
@@ -27,6 +31,7 @@ const Dashboard = () => {
     const [netWorthState, setNetWorthState] = useState(0)
 
     useEffect(() => {
+        dispatch(setSelectedPage(0))
         getData()
     }, [])
 

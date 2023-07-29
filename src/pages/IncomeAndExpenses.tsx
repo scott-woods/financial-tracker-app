@@ -5,8 +5,12 @@ import IncomeTab from "../components/IncomeAndExpenses/IncomeTab";
 import ExpensesTab from "../components/IncomeAndExpenses/ExpensesTab";
 import InvestmentsTab from "../components/IncomeAndExpenses/InvestmentsTab";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setSelectedPage } from "../state/slices/selectedPageSlice";
 
 const IncomeAndExpenses = () => {
+
+    const dispatch = useDispatch()
 
     //states
     const [tabIndex, setTabIndex] = useState(0)
@@ -19,6 +23,7 @@ const IncomeAndExpenses = () => {
     const [totalExpenses, setTotalExpenses] = useState(0)
 
     useEffect(() => {
+        dispatch(setSelectedPage(1))
         getData()
     }, [])
 

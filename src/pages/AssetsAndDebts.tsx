@@ -1,7 +1,16 @@
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import NetWorth from "../components/AssetsAndDebts/NetWorth";
+import { setSelectedPage } from "../state/slices/selectedPageSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const AssetsAndDebts = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setSelectedPage(2))
+    }, [])
 
     return (
         <Grid container spacing={4} padding={4}>

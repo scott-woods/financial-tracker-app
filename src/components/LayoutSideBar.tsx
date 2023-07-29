@@ -1,16 +1,20 @@
 import { Drawer, Toolbar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { Home, CurrencyExchange, Savings } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../hooks/useAppSelector";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSelectedPage, setSelectedPage } from "../state/slices/selectedPageSlice";
 
 
 const LayoutSideBar = () => {
 
     const navigate = useNavigate()
-    const [selected, setSelected] = useState(0);
 
-    const handleItemClicked = (index:any, location:any) => {
-        setSelected(index)
+    const selectedPage = useSelector(selectSelectedPage)
+
+    const handleItemClicked = (location:any) => {
         navigate(location)
     }
 
@@ -27,7 +31,7 @@ const LayoutSideBar = () => {
             <Box sx={{ overflow: 'auto' }}>
                 <List>
                     <MenuItem>
-                        <ListItemButton onClick={() => handleItemClicked(0, "dashboard")} selected={selected === 0}>
+                        <ListItemButton onClick={() => handleItemClicked("dashboard")} selected={selectedPage === 0}>
                             <ListItemIcon>
                                 <Home />
                             </ListItemIcon>
@@ -35,7 +39,7 @@ const LayoutSideBar = () => {
                         </ListItemButton>
                     </MenuItem>
                     <MenuItem>
-                        <ListItemButton onClick={() => handleItemClicked(1, "income-and-expenses")} selected={selected === 1}>
+                        <ListItemButton onClick={() => handleItemClicked("income-and-expenses")} selected={selectedPage === 1}>
                             <ListItemIcon>
                                 <CurrencyExchange />
                             </ListItemIcon>
@@ -43,7 +47,7 @@ const LayoutSideBar = () => {
                         </ListItemButton>
                     </MenuItem>
                     <MenuItem>
-                        <ListItemButton onClick={() => handleItemClicked(2, "assets-and-debts")} selected={selected === 2}>
+                        <ListItemButton onClick={() => handleItemClicked("assets-and-debts")} selected={selectedPage === 2}>
                             <ListItemIcon>
                                 <Savings />
                             </ListItemIcon>

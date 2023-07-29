@@ -10,6 +10,9 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import axios from 'axios';
+import { Provider } from 'react-redux';
+import store, { persistor } from './state/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 
 const domain : string = process.env.REACT_APP_AUTH0_DOMAIN as string;
@@ -23,17 +26,21 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   //<React.StrictMode>
-    <Auth0Provider
-    domain={domain}
-    clientId={clientId}
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-      audience: `https://${audience}/`,
-      scope: "read:current_user"
-    }}
-    >
-      <App />
-    </Auth0Provider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Auth0Provider
+          domain={domain}
+          clientId={clientId}
+          authorizationParams={{
+            redirect_uri: window.location.origin,
+            audience: `https://${audience}/`,
+            scope: "read:current_user"
+          }}
+          >
+            <App />
+          </Auth0Provider>
+        </PersistGate>
+      </Provider>
   //</React.StrictMode>
 );
 
