@@ -1,9 +1,12 @@
 import { Grid, TableContainer, Table, TableHead, TableRow, TableCell, Checkbox, TableSortLabel, TableBody, Button, Stack } from "@mui/material";
 import IncomeTable from "./IncomeTable";
-import { useState } from "react";
-import AddEditIncome from "./AddEditIncome";
+import { useEffect, useState } from "react";
+import AddEditIncomeModal from "./AddEditIncomeModal";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import axios from "axios";
+import { timeframes } from "../../timeframes";
+import CustomDataTable from "../CustomDataTable";
+import { currencyFormatter } from "../../tools/currencyFormatter";
 
 interface IIncomeTabProps {
     show: boolean;
@@ -11,14 +14,28 @@ interface IIncomeTabProps {
     setRecurringIncome:any;
 }
 
+const incomeColumns = [
+    { label: 'Name', accessor: 'name' },
+    { label: 'Amount', accessor: 'amount' },
+    { label: 'Timeframe', accessor: 'timeframe' }
+]
+
 const IncomeTab = (props:IIncomeTabProps) => {
 
     const [selectedRow, setSelectedRow] = useState<number | null>(null)
     const [showModal, setShowModal] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
-    const [incomeToEdit, setIncomeToEdit] = useState<any | null | undefined>(null)
+    const [selectedIncome, setSelectedIncome] = useState<any | null | undefined>(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [deleteModalMessage, setDeleteModalMessage] = useState<string | undefined>(undefined)
+    const [incomeTableData, setIncomeTableData] = useState<any>([])
+
+    useEffect(() => {
+        setIncomeTableData(props.recurringIncome.map((i:any) => ({
+            ...i,
+            amount: currencyFormatter(i.amount),
+            timeframe: timeframes.find(t => t.value === i.timeframe).label
+        })))
+    }, [props.recurringIncome])
 
     const handleAddClicked = () => {
         setIsEditing(false)
@@ -31,7 +48,7 @@ const IncomeTab = (props:IIncomeTabProps) => {
             console.log("Recurring Income with id", selectedRow, "not found")
         }
         else {
-            setIncomeToEdit(income)
+            setSelectedIncome(income)
             setIsEditing(true)
             setShowModal(true)
         }
@@ -40,7 +57,7 @@ const IncomeTab = (props:IIncomeTabProps) => {
     const handleDeleteClicked = () => {
         let income = props.recurringIncome.find((i:any) => i.id === selectedRow)
         if (income != null) {
-            setDeleteModalMessage(`Are you sure you want to delete ${income.name}?`)
+            setSelectedIncome(income)
             setShowDeleteModal(true)
         }
     }
@@ -60,7 +77,7 @@ const IncomeTab = (props:IIncomeTabProps) => {
     }
 
     const handleClose = () => {
-        setIncomeToEdit(null)
+        setSelectedIncome(null)
         setShowModal(false)
     }
     
@@ -81,24 +98,26 @@ const IncomeTab = (props:IIncomeTabProps) => {
                             </Stack>
                         </Grid>
                         <Grid item xs={12}>
-                            <IncomeTable
-                                recurringIncome={props.recurringIncome}
+                            <CustomDataTable
+                                isSelectable={true}
+                                tableData={incomeTableData}
+                                columns={incomeColumns}
                                 selectedRow={selectedRow}
                                 setSelectedRow={setSelectedRow}
                             />
                         </Grid>
                     </Grid>
-                    <AddEditIncome
+                    <AddEditIncomeModal
                     show={showModal}
                     isEditing={isEditing}
-                    income={incomeToEdit}
+                    income={selectedIncome}
                     handleClose={handleClose}
                     setRecurringIncome={props.setRecurringIncome}
                      />
                     <ConfirmDeleteModal
                         show={showDeleteModal}
                         title="Delete Income"
-                        message={deleteModalMessage}
+                        message={`Are you sure you want to delete "${selectedIncome?.name}"?`}
                         handleConfirm={handleConfirmDelete}
                         handleClose={() => setShowDeleteModal(false)}
                     />

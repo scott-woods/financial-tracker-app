@@ -1,30 +1,31 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Stack } from "@mui/material";
-import { Formik, FormikProps, useFormik } from "formik";
-import { Form } from "react-router-dom";
-import AddEditIncomeFormFields from "./AddEditIncomeFormFields";
-import * as Yup from 'yup'
-import axios from "axios";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Stack, Button } from "@mui/material";
+import AddEditInvestmentFormFields from "./AddEditInvestmentFormFields";
 import { useEffect } from "react";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 
-interface IAddEditIncomeProps {
+interface IAddEditInvestmentModalProps {
     show: boolean
     isEditing: boolean
-    income?: any
+    investment?: any
+    setRecurringInvestments: any
     handleClose: any
-    setRecurringIncome: any
 }
 
-interface AddEditIncomeFormData {
+interface AddEditInvestmentFormData {
     name: string
     amount: number
     timeframe: any
+    isFromLiquid: boolean
 }
 
-const defaultValues : AddEditIncomeFormData = {
+const defaultValues : AddEditInvestmentFormData = {
     name: "",
     amount: 0,
-    timeframe: null
+    timeframe: null,
+    isFromLiquid: false
 }
 
 const validationSchema = Yup.object().shape({
@@ -33,34 +34,43 @@ const validationSchema = Yup.object().shape({
     timeframe: Yup.number().required('Timeframe is required')
 })
 
-const AddEditIncome = (props:IAddEditIncomeProps) => {
+const AddEditInvestmentModal = (props:IAddEditInvestmentModalProps) => {
 
     useEffect(() => {
-        if (props.income) {
-            formik.setValues(props.income)
+        if (props.investment) {
+            formik.setValues(props.investment)
         }
         else {
             formik.setValues(defaultValues)
         }
-    }, [props.income])
+    }, [props.investment])
+
+    useEffect(() => {
+        if (!props.isEditing) {
+            formik.resetForm()
+        }
+        else if (props.investment) {
+            formik.setValues(props.investment)
+        }
+    }, [props.isEditing])
 
     const handleSubmit = async (values:any) => {
         try {
             if (!props.isEditing) {
                 await axios
-                .post('/api/v1/RecurringIncomes', values)
+                .post('/api/v1/RecurringInvestments', values)
                 .then((res:any) => {
                     if (res.data) {
-                        props.setRecurringIncome((prevData:any) => [...prevData, res.data])
+                        props.setRecurringInvestments((prevData:any) => [...prevData, res.data])
                     }
                 })
             }
             else {
-                await axios.put(`/api/v1/RecurringIncomes`, values)
+                await axios.put(`/api/v1/RecurringInvestments`, values)
 
-                props.setRecurringIncome((prevData:any) => {
+                props.setRecurringInvestments((prevData:any) => {
                     return prevData.map((i:any) => {
-                        return i.id === props.income.id ? {...i, ...values } : i
+                        return i.id === props.investment.id ? {...i, ...values } : i
                     })
                 })
             }
@@ -86,19 +96,16 @@ const AddEditIncome = (props:IAddEditIncomeProps) => {
         <Dialog open={props.show} maxWidth="sm" fullWidth>
             <form onSubmit={formik.handleSubmit}>
                 <DialogTitle>
-                    {props.isEditing ? "Edit Income" : "Add Income"}
+                    {props.isEditing ? "Edit Investment" : "Add Investment"}
                 </DialogTitle>
                 <DialogContent>
-                    <AddEditIncomeFormFields 
-                        isEditing={props.isEditing}
-                        income={props.income}
+                    <AddEditInvestmentFormFields 
                         formik={formik}
-                        />
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Stack direction="row" spacing={2} paddingBottom={2} paddingRight={2}>
                         <Button color="error" variant="contained" onClick={() => {
-                            formik.resetForm()
                             props.handleClose()
                         }}>
                             Cancel
@@ -110,7 +117,7 @@ const AddEditIncome = (props:IAddEditIncomeProps) => {
                 </DialogActions>
             </form>
         </Dialog>
-    )   
+    )
 }
 
-export default AddEditIncome;
+export default AddEditInvestmentModal;

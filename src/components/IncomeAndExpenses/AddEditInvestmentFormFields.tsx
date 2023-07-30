@@ -1,32 +1,12 @@
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useEffect, useRef, useState } from "react";
-import CurrencyInput from "react-currency-input-field";
-import { timeframes } from "../../timeframes";
+import { Grid, TextField, MenuItem, FormControlLabel, Switch } from "@mui/material"
+import { timeframes } from "../../timeframes"
 
-interface IAddEditIncomeFormFieldsProps {
-    income?: any
-    isEditing: boolean
+
+interface IAddEditInvestmentFormFieldsProps {
     formik: any
 }
 
-const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
-
-    //const [amountValue, setAmountValue] = useState("")
-
-    const handleAmountChanged = (event:any) => {
-        // let inputValue = event.target.value
-        // let numericValue = parseFloat(inputValue)
-
-        // if (numericValue) {
-        //     numericValue = numericValue / 100
-        //     alert(numericValue)
-        //     const formattedValue = numericValue.toFixed(2)
-        //     setAmountValue(formattedValue)
-        //     //props.formik.setFieldValue("amount", formattedValue)
-        // }
-    }
-    
+const AddEditInvestmentFormFields = (props:IAddEditInvestmentFormFieldsProps) => {
     return (
         <Grid container padding={2} spacing={4}>
             <Grid item xs={12}>
@@ -44,17 +24,6 @@ const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                {/* <CurrencyInput
-                    allowNegativeValue={false}
-                    fixedDecimalLength={2}
-                    value={props.formik.values.amount}
-                    onValueChange={props.formik.handleChange}
-                    prefix="$"
-                    disableAbbreviations={true}
-                    maxLength={12}
-                    id="amount"
-                    name="amount"
-                /> */}
                 <TextField
                     fullWidth
                     variant="outlined"
@@ -63,11 +32,7 @@ const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
                     name="amount"
                     label="Amount"
                     value={props.formik.values.amount}
-                    onChange={(event) => {
-                            props.formik.handleChange(event)
-                            handleAmountChanged(event)
-                        }
-                    }
+                    onChange={props.formik.handleChange}
                     onBlur={props.formik.handleBlur}
                     error={props.formik.touched.amount && Boolean(props.formik.errors.amount)}
                     helperText={props.formik.touched.amount && props.formik.errors.amount}
@@ -96,24 +61,23 @@ const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
                         </MenuItem>
                     ))}
                 </TextField>
-                {/* <Field
-                    as={FormControl}
-                    name="timeframe"
-                    variant="outlined"
-                    fullWidth
-                >
-                    <InputLabel>Timeframe</InputLabel>
-                    <Select label="Timeframe">
-                        {timeframes.map((option:any) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </Field> */}
+            </Grid>
+            <Grid item xs={12}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            name="isFromLiquid"
+                            value={props.formik.values.isFromLiquid}
+                            onChange={props.formik.handleChange}
+                            onBlur={props.formik.handleBlur}
+                            checked={props.formik.values.isFromLiquid}
+                        />
+                    }
+                    label="Is From Liquid"
+                />
             </Grid>
         </Grid>
     )
 }
 
-export default AddEditIncomeFormFields;
+export default AddEditInvestmentFormFields

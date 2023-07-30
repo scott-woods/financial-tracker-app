@@ -81,9 +81,17 @@ const IncomeAndExpenses = () => {
                                     show={tabIndex === 0}
                                     recurringIncome={recurringIncomeList}
                                     setRecurringIncome={setRecurringIncomeList}
-                                     />
-                                <InvestmentsTab show={tabIndex === 1} />
-                                <ExpensesTab show={tabIndex === 2} />
+                                />
+                                <InvestmentsTab
+                                    show={tabIndex === 1}
+                                    investmentList={recurringInvestmentList}
+                                    setRecurringInvestments={setRecurringInvestmentList}
+                                />
+                                <ExpensesTab
+                                    show={tabIndex === 2}
+                                    recurringExpenseList={recurringExpenseList}
+                                    setRecurringExpenses={setRecurringExpenseList}
+                                />
                             </Box>
                         </Stack>
                     </Paper>
