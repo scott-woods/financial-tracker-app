@@ -1,6 +1,8 @@
 import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material"
 import { currencyFormatter } from "../../tools/currencyFormatter";
 import { useState } from "react";
+import { time } from "console";
+import { timeframes } from "../../timeframes";
 
 
 interface IIncomeTableProps {
@@ -59,7 +61,7 @@ const IncomeTable = (props:IIncomeTableProps) => {
                                 {currencyFormatter(income.amount)}
                             </TableCell>
                             <TableCell>
-                                {income.timeframe}
+                                {timeframes.find(t => t.value === income.timeframe).label}
                             </TableCell>
                         </TableRow>
                     ))}

@@ -7,6 +7,7 @@ import InvestmentsTab from "../components/IncomeAndExpenses/InvestmentsTab";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setSelectedPage } from "../state/slices/selectedPageSlice";
+import { timeframes } from "../timeframes";
 
 const IncomeAndExpenses = () => {
 
@@ -18,9 +19,6 @@ const IncomeAndExpenses = () => {
     const [recurringIncomeList, setRecurringIncomeList] = useState([])
     const [recurringInvestmentList, setRecurringInvestmentList] = useState([])
     const [recurringExpenseList, setRecurringExpenseList] = useState([])
-    const [totalIncome, setTotalIncome] = useState(0)
-    const [totalInvestments, setTotalInvestments] = useState(0)
-    const [totalExpenses, setTotalExpenses] = useState(0)
 
     useEffect(() => {
         dispatch(setSelectedPage(1))
@@ -37,22 +35,10 @@ const IncomeAndExpenses = () => {
                 axios.get(`api/v1/RecurringExpenses`)
             ])
 
-            const recurringIncome = recurringIncomeRes.data
-            const recurringInvestments = recurringInvestmentsRes.data
-            const recurringExpenses = recurringExpensesRes.data
-
-            if (recurringIncome.length > 0) {
-                setTotalIncome(recurringIncome.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next))
-                setRecurringIncomeList(recurringIncome)
-            }
-            if (recurringInvestments.length > 0) {
-                setTotalInvestments(recurringInvestments.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next))
-                setRecurringInvestmentList(recurringInvestments)
-            }
-            if (recurringExpenses.length > 0) {
-                setTotalExpenses(recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next))
-                setRecurringExpenseList(recurringExpenses)
-            }
+            //set states
+            setRecurringIncomeList(recurringIncomeRes.data)
+            setRecurringInvestmentList(recurringInvestmentsRes.data)
+            setRecurringExpenseList(recurringExpensesRes.data)
         }
         catch (error:any) {
             alert("Error occurred while getting data - " + error.message)
@@ -76,10 +62,11 @@ const IncomeAndExpenses = () => {
         return (
             <Grid container spacing={4} padding={4} sx={{height:'100%', alignContent:'flex-start'}}>
                 <Grid item xs={12}>
-                    <IncomeAndExpensesOverview 
-                    totalIncome={totalIncome} 
-                    totalInvestments={totalInvestments}
-                    totalExpenses={totalExpenses} />
+                    <IncomeAndExpensesOverview
+                    recurringIncomeList={recurringIncomeList}
+                    recurringInvestmentList={recurringInvestmentList}
+                    recurringExpenseList={recurringExpenseList}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <Paper sx={{display:'flex', flexGrow:1, minHeight:250}}>
@@ -90,7 +77,11 @@ const IncomeAndExpenses = () => {
                                 <Tab label="Expenses"></Tab>
                             </Tabs>
                             <Box sx={{flexGrow:1, padding:2}}>
-                                <IncomeTab show={tabIndex === 0} recurringIncome={recurringIncomeList} />
+                                <IncomeTab
+                                    show={tabIndex === 0}
+                                    recurringIncome={recurringIncomeList}
+                                    setRecurringIncome={setRecurringIncomeList}
+                                     />
                                 <InvestmentsTab show={tabIndex === 1} />
                                 <ExpensesTab show={tabIndex === 2} />
                             </Box>
