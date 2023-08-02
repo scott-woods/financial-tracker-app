@@ -29,12 +29,14 @@ const Layout = () => {
                     ? theme.palette.grey[100]
                     : theme.palette.grey[900],
                 flexGrow: 1,
-                height: '100vh',
+                height: "100vh",
                 overflow: 'auto',
             }}
             >
                 <Toolbar />
-                <Outlet />
+                <Box height={`calc(100vh - 64px)`}>
+                    <Outlet />
+                </Box>
             </Box>
         </Box>
     )

@@ -86,13 +86,26 @@ const Dashboard = () => {
     }
 
     const getMonthlyBudget = (recurringIncome:any, recurringExpenses:any, savingsGoal:any) => {
-        const totalRecurringIncome = recurringIncome.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next)
-        const totalRecurringExpenses = recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
+        let totalRecurringIncome = 0
+        let totalRecurringExpenses = 0
+
+        if (recurringIncome.length > 0) {
+            totalRecurringIncome = recurringIncome.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next)
+        }
+        if (recurringExpenses.length > 0) {
+            totalRecurringExpenses = recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
+        }
+        
         return totalRecurringIncome - totalRecurringExpenses - savingsGoal
     }
 
     const getRemainingMonthlyBudget = (monthlyBudget:any, expenses : any) => {
-        const totalExpenses = expenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)   
+        let totalExpenses = 0
+
+        if (expenses.length > 0) {
+            totalExpenses = expenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
+        }
+         
         return monthlyBudget - totalExpenses
     }
 
