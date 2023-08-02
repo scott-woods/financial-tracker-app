@@ -14,6 +14,8 @@ const AssetsAndDebts = () => {
     const [assets, setAssets] = useState<any[]>([])
     const [debts, setDebts] = useState<any[]>([])
     const [totalAssetsValue, setTotalAssetsValue] = useState(0)
+    const [liquidAssetsValue, setLiquidAssetsValue] = useState(0)
+    const [nonLiquidAssetsValue, setNonLiquidAssetsValue] = useState(0)
     const [totalDebtsAmount, setTotalDebtsAmount] = useState(0)
     const [netWorth, setNetWorth] = useState(0)
 
@@ -45,6 +47,8 @@ const AssetsAndDebts = () => {
         newNetWorth = newTotalAssetsValue - newTotalDebtsAmount
 
         setTotalAssetsValue(newTotalAssetsValue)
+        setLiquidAssetsValue(newLiquidAssetsValue)
+        setNonLiquidAssetsValue(newNonLiquidAssetsValue)
         setTotalDebtsAmount(newTotalDebtsAmount)
         setNetWorth(newNetWorth)
     }, [assets, debts])
@@ -80,53 +84,98 @@ const AssetsAndDebts = () => {
             <Grid container padding={4} height="100%">
                 <Grid item lg={6} paddingRight={1}>
                     <Box height="100%" display="flex" flexDirection="column">
-                        <Grid container flexGrow={1}>
-                            <Grid item xs={6}>
+                        <Grid container flexGrow={1} paddingBottom={1}>
+                            <Grid item xs={5} paddingRight={1}>
                                 <Paper elevation={12} sx={{padding:2, height:'100%'}}>
-                                    <Box display="flex" flexWrap="wrap" justifyContent="center" alignContent="flex-start" height='100%'>
+                                    <Box height="100%" display="flex" flexDirection="column">
+                                        <Typography variant="h6" align="center">
+                                            Net Worth
+                                        </Typography>
+                                        <Box display="flex" height="100%" justifyContent="center" alignItems="center">
+                                            <Typography variant="h4" align="center">
+                                                {currencyFormatter(netWorth)}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    {/* <Grid container border={4} height="100%">
+                                        <Grid item xs={12}>
+                                            <Typography variant="h6" align="center">
+                                                Net Worth
+                                            </Typography>
+                                            <Box display="flex" height="100%" justifyContent="center" alignItems="center">
+                                                <Typography variant="h4">
+                                                    {currencyFormatter(netWorth)}
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                    </Grid> */}
+                                    {/* <Box display="flex" flexWrap="wrap" justifyContent="center" alignContent="flex-start" height='100%'>
                                         <Typography width='100%' variant="h6">
                                             Net Worth
                                         </Typography>
                                         <Typography>
                                             {currencyFormatter(netWorth)}
                                         </Typography>
-                                    </Box>
+                                    </Box> */}
                                 </Paper>
                             </Grid>
-                            <Grid item xs={6}>
-                                <Stack spacing={2} height='100%' flexGrow={1}>
+                            <Grid item xs={7} paddingLeft={1}>
+                                <Stack spacing={2} height='100%'>
                                     <Paper sx={{padding:2, height:'100%'}}>
-                                        <Box display="flex" justifyContent="space-between">
-                                            <Typography>
-                                                Total Assets: {currencyFormatter(totalAssetsValue)}
-                                            </Typography>
-                                            <Typography>
-                                                Liquid Assets
-                                            </Typography>
-                                        </Box>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <Typography variant="h6" align="center">
+                                                    Total Assets
+                                                </Typography>
+                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
+                                                    <Typography>
+                                                        {currencyFormatter(totalAssetsValue)}
+                                                    </Typography>
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Typography variant="h6" align="center">
+                                                    Liquid Assets
+                                                </Typography>
+                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
+                                                    <Typography>
+                                                        {currencyFormatter(liquidAssetsValue)}
+                                                    </Typography>
+                                                </Box>
+                                            </Grid>
+                                        </Grid>
                                     </Paper>
                                     <Paper sx={{padding:2, height:'100%'}}>
-                                        <Box>
-                                            <Typography>
-                                                Total Debts: {currencyFormatter(totalDebtsAmount)}
-                                            </Typography>
-                                        </Box>
+                                        <Grid container>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h6" align="center">
+                                                    Total Debts
+                                                </Typography>
+                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
+                                                    <Typography>
+                                                        {currencyFormatter(totalDebtsAmount)}
+                                                    </Typography>
+                                                </Box>
+                                            </Grid>
+                                        </Grid>
                                     </Paper>
                                 </Stack>
                             </Grid>
                         </Grid>
-                        <Paper sx={{padding:2, flexGrow:5}}>
-                                <Box>
-                                    <Typography>
-                                        Chart
-                                    </Typography>
-                                </Box>
-                        </Paper>
+                        <Box flexGrow={8} paddingTop={1}>
+                            <Paper sx={{padding:2, height:"100%"}}>
+                                    <Box>
+                                        <Typography>
+                                            Chart
+                                        </Typography>
+                                    </Box>
+                            </Paper>
+                        </Box>
                     </Box>
                 </Grid>
                 <Grid item lg={6} paddingLeft={1}>
                     <Paper sx={{height:'100%'}}>
-                        <AssetsAndDebtsEditor assets={assets} debts={debts} setAssets={setAssets} />
+                        <AssetsAndDebtsEditor assets={assets} debts={debts} setAssets={setAssets} setDebts={setDebts} />
                     </Paper>
                 </Grid>
             </Grid>
