@@ -1,10 +1,12 @@
-import { Box, Button, Divider, Grid, List, ListItem, ListItemText, Paper, Stack, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, List, ListItem, ListItemText, Paper, Stack, Tab, Tabs, Toolbar, Typography } from "@mui/material";
 import { setSelectedPage } from "../state/slices/selectedPageSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { currencyFormatter } from "../tools/currencyFormatter";
 import AssetsAndDebtsEditor from "../components/AssetsAndDebts/AssetsAndDebtsEditor";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
 
 const AssetsAndDebts = () => {
 
@@ -13,11 +15,14 @@ const AssetsAndDebts = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [assets, setAssets] = useState<any[]>([])
     const [debts, setDebts] = useState<any[]>([])
+    const [reports, setReports] = useState<any[]>([])
     const [totalAssetsValue, setTotalAssetsValue] = useState(0)
     const [liquidAssetsValue, setLiquidAssetsValue] = useState(0)
     const [nonLiquidAssetsValue, setNonLiquidAssetsValue] = useState(0)
     const [totalDebtsAmount, setTotalDebtsAmount] = useState(0)
     const [netWorth, setNetWorth] = useState(0)
+    const [chartTabIndex, setChartTabIndex] = useState(0)
+    const [chartData, setChartData] = useState<any[]>([])
 
     useEffect(() => {
         dispatch(setSelectedPage(2))
@@ -53,18 +58,43 @@ const AssetsAndDebts = () => {
         setNetWorth(newNetWorth)
     }, [assets, debts])
 
+    useEffect(() => {
+        let newChartData = reports.map((report:any) => {
+            return {
+                netWorth: report.totalAssets - report.totalDebts,
+                totalAssets: report.totalAssets,
+                totalDebts: report.totalDebts,
+                date: Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                }).format(new Date(report.date.toString()))
+            }
+        })
+
+        if (newChartData) {
+            setChartData(newChartData)
+        }
+    }, [reports])
+
     const getData = async () => {
         try {
             setIsLoading(true)
 
-            const [assetsRes, debtsRes] = await Promise.all([
+            const [assetsRes, debtsRes, reportsRes] = await Promise.all([
                 axios.get(`/api/v1/Assets`),
                 axios.get(`/api/v1/Debts`),
+                axios.get(`/api/v1/NetWorthReports`)
             ])
 
             //set states
             setAssets(assetsRes.data)
             setDebts(debtsRes.data)
+            setReports(reportsRes.data)
         }
         catch (error) {
             console.log(error)
@@ -72,6 +102,27 @@ const AssetsAndDebts = () => {
         finally {
             setIsLoading(false)
         }
+    }
+
+    const addNetWorthReport = async () => {
+        let newReport = {
+            date: new Date(),
+            liquidAssets: liquidAssetsValue,
+            nonLiquidAssets: nonLiquidAssetsValue,
+            totalAssets: totalAssetsValue,
+            totalDebts: totalDebtsAmount,
+            previousReport: null
+        }
+
+        await axios
+            .post(`/api/v1/NetWorthReports`, newReport)
+            .then((res) => {
+                setReports((prevData:any) => [...prevData, res.data])
+            })
+    }
+
+    const handleChartTabChange = (event: React.SyntheticEvent, index: number) => {
+        setChartTabIndex(index)
     }
 
     if (isLoading) {
@@ -86,7 +137,7 @@ const AssetsAndDebts = () => {
                     <Box height="100%" display="flex" flexDirection="column">
                         <Grid container flexGrow={1} paddingBottom={1}>
                             <Grid item xs={5} paddingRight={1}>
-                                <Paper elevation={12} sx={{padding:2, height:'100%'}}>
+                                <Paper sx={{padding:2, height:'100%'}}>
                                     <Box height="100%" display="flex" flexDirection="column">
                                         <Typography variant="h6" align="center">
                                             Net Worth
@@ -163,19 +214,38 @@ const AssetsAndDebts = () => {
                             </Grid>
                         </Grid>
                         <Box flexGrow={8} paddingTop={1}>
-                            <Paper sx={{padding:2, height:"100%"}}>
-                                    <Box>
-                                        <Typography>
-                                            Chart
-                                        </Typography>
+                            <Paper sx={{height:"100%"}}>
+                                <Stack height="100%">
+                                    <Box height="100%" padding={2}>
+                                        <ResponsiveContainer>
+                                            <BarChart
+                                                data={chartData}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="date" reversed hide={true} />
+                                                <YAxis />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Bar dataKey="netWorth" fill="#11d935" />
+                                                <Bar label="Assets" dataKey="totalAssets" fill="#3511d9" />
+                                                <Bar label="Debts" dataKey="totalDebts" fill="#d93511" />
+                                            </BarChart>
+                                        </ResponsiveContainer>
                                     </Box>
+                                </Stack>
                             </Paper>
                         </Box>
                     </Box>
                 </Grid>
                 <Grid item lg={6} paddingLeft={1}>
                     <Paper sx={{height:'100%'}}>
-                        <AssetsAndDebtsEditor assets={assets} debts={debts} setAssets={setAssets} setDebts={setDebts} />
+                        <AssetsAndDebtsEditor
+                            assets={assets}
+                            debts={debts}
+                            setAssets={setAssets}
+                            setDebts={setDebts}
+                            addNetWorthReport={addNetWorthReport}
+                        />
                     </Paper>
                 </Grid>
             </Grid>

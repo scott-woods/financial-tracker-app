@@ -9,6 +9,7 @@ import * as Yup from "yup";
 interface IAssetsEditorProps {
     assets: IAssetFields[]
     setAssets: any
+    addNetWorthReport: any
 }
 
 interface IAssetsFormFields {
@@ -66,6 +67,7 @@ const AssetsEditor = (props:IAssetsEditorProps) => {
                 .then((res:any) => {
                     if (res.data) {
                         props.setAssets(values.assets)
+                        props.addNetWorthReport()
                     }
                 })
         }

@@ -10,6 +10,7 @@ interface IAssetsAndDebtsEditorProps {
     debts: any[]
     setAssets: any
     setDebts: any
+    addNetWorthReport: any
 }
 
 const AssetsAndDebtsEditor = (props:IAssetsAndDebtsEditorProps) => {
@@ -28,10 +29,10 @@ const AssetsAndDebtsEditor = (props:IAssetsAndDebtsEditorProps) => {
             </Tabs>
             <Box height="100%">
                 {tabIndex === 0 && (
-                    <AssetsEditor assets={props.assets} setAssets={props.setAssets} />
+                    <AssetsEditor assets={props.assets} setAssets={props.setAssets} addNetWorthReport={props.addNetWorthReport} />
                 )}
                 {tabIndex === 1 && (
-                    <DebtsEditor debts={props.debts} setDebts={props.setDebts} />
+                    <DebtsEditor debts={props.debts} setDebts={props.setDebts} addNetWorthReport={props.addNetWorthReport} />
                 )}  
             </Box>
         </Stack>

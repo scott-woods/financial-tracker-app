@@ -8,6 +8,7 @@ import * as Yup from "yup";
 interface IDebtsEditorProps {
     debts: any[]
     setDebts: any
+    addNetWorthReport: any
 }
 
 interface IDebtFields {
@@ -63,6 +64,7 @@ const DebtsEditor = (props:IDebtsEditorProps) => {
                 .then((res:any) => {
                     if (res.data) {
                         props.setDebts(values.debts)
+                        props.addNetWorthReport()
                     }
                 })
         }
