@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { currencyFormatter } from "../../tools/currencyFormatter";
 import { timeframes } from "../../timeframes";
 import axios from "axios";
-import { Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack } from "@mui/material";
 import CustomDataTable from "../CustomDataTable";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import AddEditExpenseModal from "./AddEditExpenseModal";
@@ -73,7 +73,27 @@ const ExpensesTab = (props:IExpensesTabProps) => {
         <>
             {props.show && (
                 <>
-                    <Grid container spacing={2}>
+                    <Stack height="100%" width="100%" spacing={2}>
+                        <Stack direction="row" spacing={2}>
+                            <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
+                            {selectedRow !== null && (
+                                <>
+                                    <Button color="primary" variant="outlined" onClick={handleEditClicked}>Edit</Button>
+                                    <Button color="error" variant="contained" onClick={handleDeleteClicked}>Delete</Button>
+                                </>
+                            )}
+                        </Stack>
+                        <Box height="100%">
+                            <CustomDataTable
+                                isSelectable={true}
+                                tableData={expensesTableData}
+                                columns={expenseColumns}
+                                selectedRow={selectedRow}
+                                setSelectedRow={setSelectedRow}
+                            />
+                        </Box>
+                    </Stack>
+                    {/* <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={2}>
                                 <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
@@ -94,7 +114,7 @@ const ExpensesTab = (props:IExpensesTabProps) => {
                                 setSelectedRow={setSelectedRow}
                             />
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <AddEditExpenseModal
                         show={showAddEditModal}
                         isEditing={isEditing}

@@ -34,7 +34,7 @@ const Layout = () => {
             }}
             >
                 <Toolbar />
-                <Box height={`calc(100vh - 64px)`}>
+                <Box height={`calc(100vh - 64px)`} overflow={"auto"}>
                     <Outlet />
                 </Box>
             </Box>

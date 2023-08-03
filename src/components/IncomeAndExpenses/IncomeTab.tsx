@@ -1,4 +1,4 @@
-import { Grid, TableContainer, Table, TableHead, TableRow, TableCell, Checkbox, TableSortLabel, TableBody, Button, Stack } from "@mui/material";
+import { Grid, TableContainer, Table, TableHead, TableRow, TableCell, Checkbox, TableSortLabel, TableBody, Button, Stack, Box } from "@mui/material";
 import IncomeTable from "./IncomeTable";
 import { useEffect, useState } from "react";
 import AddEditIncomeModal from "./AddEditIncomeModal";
@@ -85,7 +85,27 @@ const IncomeTab = (props:IIncomeTabProps) => {
         <>
             {props.show && (
                 <>
-                    <Grid container spacing={2}>
+                    <Stack height="100%" width="100%" spacing={2}>
+                        <Stack direction="row" spacing={2}>
+                            <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
+                            {selectedRow !== null && (
+                                <>
+                                    <Button color="primary" variant="outlined" onClick={handleEditClicked}>Edit</Button>
+                                    <Button color="error" variant="contained" onClick={handleDeleteClicked}>Delete</Button>
+                                </>
+                            )}
+                        </Stack>
+                        <Box height="100%">
+                            <CustomDataTable
+                                isSelectable={true}
+                                tableData={incomeTableData}
+                                columns={incomeColumns}
+                                selectedRow={selectedRow}
+                                setSelectedRow={setSelectedRow}
+                            />
+                        </Box>
+                    </Stack>
+                    {/* <Grid container height="100%" border={4}>
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={2}>
                                 <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
@@ -106,7 +126,7 @@ const IncomeTab = (props:IIncomeTabProps) => {
                                 setSelectedRow={setSelectedRow}
                             />
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <AddEditIncomeModal
                     show={showModal}
                     isEditing={isEditing}

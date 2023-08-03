@@ -60,23 +60,23 @@ const IncomeAndExpenses = () => {
     }
     else {
         return (
-            <Grid container spacing={4} padding={4} sx={{height:'100%', alignContent:'flex-start'}}>
-                <Grid item xs={12}>
+            <Stack spacing={2} padding={4} sx={{height:'100%'}}>
+                <Box>
                     <IncomeAndExpensesOverview
                     recurringIncomeList={recurringIncomeList}
                     recurringInvestmentList={recurringInvestmentList}
                     recurringExpenseList={recurringExpenseList}
                     />
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper sx={{display:'flex', flexGrow:1, minHeight:250}}>
+                </Box>
+                <Box height="100%">
+                    <Paper sx={{display:'flex', height:"100%"}}>
                         <Stack sx={{width:'100%'}}>
                             <Tabs onChange={handleTabChange} value={tabIndex}>
                                 <Tab label="Income"></Tab>
                                 <Tab label="Investments"></Tab>
                                 <Tab label="Expenses"></Tab>
                             </Tabs>
-                            <Box sx={{flexGrow:1, padding:2}}>
+                            <Box display="flex" alignItems="center" height="100%" sx={{padding:2}}>
                                 <IncomeTab
                                     show={tabIndex === 0}
                                     recurringIncome={recurringIncomeList}
@@ -95,8 +95,8 @@ const IncomeAndExpenses = () => {
                             </Box>
                         </Stack>
                     </Paper>
-                </Grid>
-            </Grid>
+                </Box>
+            </Stack>
         )
     }
 }

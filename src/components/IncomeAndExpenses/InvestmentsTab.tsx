@@ -1,4 +1,4 @@
-import { Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import CustomDataTable from "../CustomDataTable";
 import { currencyFormatter } from "../../tools/currencyFormatter";
@@ -17,7 +17,7 @@ const investmentColumns = [
     { label: "Name", accessor: "name" },
     { label: "Amount", accessor: "amount" },
     { label: "Timeframe", accessor: "timeframe" },
-    { label: "Is From Liquid", accessor: "isFromLiquid", type: "checkbox" }
+    { label: "Liquid?", accessor: "isFromLiquid", type: "checkbox" }
 ]
 
 const InvestmentsTab = (props:IInvestmentsTabProps) => {
@@ -74,7 +74,27 @@ const InvestmentsTab = (props:IInvestmentsTabProps) => {
         <>
             {props.show && (
                 <>
-                    <Grid container spacing={2}>
+                    <Stack height="100%" width="100%" spacing={2}>
+                        <Stack direction="row" spacing={2}>
+                            <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
+                            {selectedRow !== null && (
+                                <>
+                                    <Button color="primary" variant="outlined" onClick={handleEditClicked}>Edit</Button>
+                                    <Button color="error" variant="contained" onClick={handleDeleteClicked}>Delete</Button>
+                                </>
+                            )}
+                        </Stack>
+                        <Box height="100%">
+                            <CustomDataTable
+                                isSelectable={true}
+                                tableData={investmentsTableData}
+                                columns={investmentColumns}
+                                selectedRow={selectedRow}
+                                setSelectedRow={setSelectedRow}
+                            />
+                        </Box>
+                    </Stack>
+                    {/* <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Stack direction="row" spacing={2}>
                                 <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
@@ -95,7 +115,7 @@ const InvestmentsTab = (props:IInvestmentsTabProps) => {
                                 setSelectedRow={setSelectedRow}
                             />
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <AddEditInvestmentModal
                         show={showAddEditModal}
                         isEditing={isEditing}

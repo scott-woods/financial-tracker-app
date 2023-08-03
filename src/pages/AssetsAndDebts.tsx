@@ -133,111 +133,53 @@ const AssetsAndDebts = () => {
     else {
         return (
             <Grid container padding={4} height="100%">
-                <Grid item lg={6} paddingRight={1}>
-                    <Box height="100%" display="flex" flexDirection="column">
-                        <Grid container flexGrow={1} paddingBottom={1}>
-                            <Grid item xs={5} paddingRight={1}>
-                                <Paper sx={{padding:2, height:'100%'}}>
-                                    <Box height="100%" display="flex" flexDirection="column">
-                                        <Typography variant="h6" align="center">
-                                            Net Worth
-                                        </Typography>
-                                        <Box display="flex" height="100%" justifyContent="center" alignItems="center">
-                                            <Typography variant="h4" align="center">
-                                                {currencyFormatter(netWorth)}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                    {/* <Grid container border={4} height="100%">
-                                        <Grid item xs={12}>
-                                            <Typography variant="h6" align="center">
-                                                Net Worth
-                                            </Typography>
-                                            <Box display="flex" height="100%" justifyContent="center" alignItems="center">
-                                                <Typography variant="h4">
-                                                    {currencyFormatter(netWorth)}
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid> */}
-                                    {/* <Box display="flex" flexWrap="wrap" justifyContent="center" alignContent="flex-start" height='100%'>
-                                        <Typography width='100%' variant="h6">
-                                            Net Worth
-                                        </Typography>
-                                        <Typography>
-                                            {currencyFormatter(netWorth)}
-                                        </Typography>
-                                    </Box> */}
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={7} paddingLeft={1}>
-                                <Stack spacing={2} height='100%'>
-                                    <Paper sx={{padding:2, height:'100%'}}>
-                                        <Grid container>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" align="center">
-                                                    Total Assets
-                                                </Typography>
-                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
-                                                    <Typography>
-                                                        {currencyFormatter(totalAssetsValue)}
-                                                    </Typography>
-                                                </Box>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" align="center">
-                                                    Liquid Assets
-                                                </Typography>
-                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
-                                                    <Typography>
-                                                        {currencyFormatter(liquidAssetsValue)}
-                                                    </Typography>
-                                                </Box>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper sx={{padding:2, height:'100%'}}>
-                                        <Grid container>
-                                            <Grid item xs={12}>
-                                                <Typography variant="h6" align="center">
-                                                    Total Debts
-                                                </Typography>
-                                                <Box display="flex" height="100%" justifyContent="center" alignItems="center">
-                                                    <Typography>
-                                                        {currencyFormatter(totalDebtsAmount)}
-                                                    </Typography>
-                                                </Box>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                </Stack>
-                            </Grid>
-                        </Grid>
-                        <Box flexGrow={8} paddingTop={1}>
-                            <Paper sx={{height:"100%"}}>
-                                <Stack height="100%">
-                                    <Box height="100%" padding={2}>
-                                        <ResponsiveContainer>
-                                            <BarChart
-                                                data={chartData}
-                                            >
-                                                <CartesianGrid strokeDasharray="3 3" />
-                                                <XAxis dataKey="date" reversed hide={true} />
-                                                <YAxis />
-                                                <Tooltip />
-                                                <Legend />
-                                                <Bar dataKey="netWorth" fill="#11d935" />
-                                                <Bar label="Assets" dataKey="totalAssets" fill="#3511d9" />
-                                                <Bar label="Debts" dataKey="totalDebts" fill="#d93511" />
-                                            </BarChart>
-                                        </ResponsiveContainer>
-                                    </Box>
-                                </Stack>
-                            </Paper>
-                        </Box>
-                    </Box>
+                <Grid item xs={5} paddingRight={1}>
+                    <Stack height="100%" spacing={2}>
+                        <Paper sx={{padding:2}}>
+                            <Stack>
+                                <Typography variant="h5">
+                                    Net Worth
+                                </Typography>
+                                <Typography variant="h3" fontWeight="bold">
+                                    {currencyFormatter(netWorth)}
+                                </Typography>
+                                <Typography variant="subtitle1" fontWeight="light" marginTop={2}>
+                                    Assets
+                                </Typography>
+                                <Typography variant="h5">
+                                    {currencyFormatter(totalAssetsValue)}
+                                </Typography>
+                                <Typography variant="subtitle1" fontWeight="light" marginTop={2}>
+                                    Debts
+                                </Typography>
+                                <Typography variant="h5">
+                                    {currencyFormatter(totalDebtsAmount)}
+                                </Typography>
+                            </Stack>
+                        </Paper>
+                        <Paper sx={{height:"100%"}}>
+                            <Stack height="100%">
+                                <Box height="100%" padding={2}>
+                                    <ResponsiveContainer>
+                                        <BarChart
+                                            data={chartData}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="date" reversed hide={true} />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="netWorth" fill="#11d935" />
+                                            <Bar label="Assets" dataKey="totalAssets" fill="#3511d9" />
+                                            <Bar label="Debts" dataKey="totalDebts" fill="#d93511" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </Box>
+                            </Stack>
+                        </Paper>
+                    </Stack>
                 </Grid>
-                <Grid item lg={6} paddingLeft={1}>
+                <Grid item xs={7} paddingLeft={1}>
                     <Paper sx={{height:'100%'}}>
                         <AssetsAndDebtsEditor
                             assets={assets}
