@@ -15,6 +15,11 @@ import expensesApi from "../Api/expensesApi";
 import { currencyFormatter } from "../tools/currencyFormatter";
 import { useDispatch } from "react-redux";
 import { setSelectedPage } from "../state/slices/selectedPageSlice";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import TodaysSpending from "../components/Dashboard/TodaysSpending";
+import { calculateMonthlyBudget, calculateRemainingMonthlyBudget, calculateDailyBudget, calculateRemainingDailyBudget } from "../tools/budgetCalculators";
+import { calculateExpensesToday } from "../tools/spendingCalculators";
+import { calculateNetWorth } from "../tools/valueCalculators";
 
 
 const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -24,24 +29,90 @@ const Dashboard = () => {
     const dispatch = useDispatch()
 
     const [isLoading, setIsLoading] = useState(true);
-    const [monthlyBudgetState, setMonthlyBudgetState] = useState(0)
-    const [remainingMonthlyBudgetState, setRemainingMonthlyBudgetState] = useState(0)
-    const [dailyBudgetState, setDailyBudgetState] = useState(0)
-    const [remainingDailyBudgetState, setRemainingDailyBudgetState] = useState(0)
-    const [netWorthState, setNetWorthState] = useState(0)
+    const [chartData, setChartData] = useState<any[]>([])
+    const [expensesToday, setExpensesToday] = useState(0)
+
+    const [recurringIncomes, setRecurringIncomes] = useState<any[]>([])
+    const [recurringExpenses, setRecurringExpenses] = useState<any[]>([])
+    const [userMetadata, setUserMetadata] = useState<any | null | undefined>(null)
+    const [expenses, setExpenses] = useState<any[]>([])
+    const [assets, setAssets] = useState<any[]>([])
+    const [debts, setDebts] = useState<any[]>([])
+
+    const [monthlyBudget, setMonthlyBudget] = useState(0)
+    const [remainingMonthlyBudget, setRemainingMonthlyBudget] = useState(0)
+    const [dailyBudget, setDailyBudget] = useState(0)
+    const [remainingDailyBudget, setRemainingDailyBudget] = useState(0)
+    const [netWorth, setNetWorth] = useState(0)
 
     useEffect(() => {
         dispatch(setSelectedPage(0))
         getData()
     }, [])
 
+    useEffect(() => {
+        let newChartData = []
+        let currentDate = new Date()
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date(currentDate)
+            date.setDate(currentDate.getDate() - i)
+
+            let expensesAmount = 0
+            if (expenses.length > 0) {
+                const expensesByDate = expenses.filter((e:any) => {
+                    const expenseDate = new Date(e.date)
+                    return (
+                        expenseDate.getDate() === date.getDate() &&
+                        expenseDate.getMonth() === date.getMonth() &&
+                        expenseDate.getFullYear() === date.getFullYear()
+                    )
+                })
+                if (expensesByDate.length > 0) {
+                    expensesAmount = expensesByDate.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
+                }
+            }
+
+            newChartData.push({
+                date: date,
+                amount: expensesAmount
+            })
+        }
+
+        setChartData(newChartData)
+    }, [expenses])
+
+    useEffect(() => {
+        let newMonthlyBudget = calculateMonthlyBudget(recurringIncomes, recurringExpenses, userMetadata)
+
+        setMonthlyBudget(newMonthlyBudget)
+    }, [recurringIncomes, recurringExpenses, userMetadata])
+
+    useEffect(() => {
+        let newRemainingMonthlyBudget = calculateRemainingMonthlyBudget(monthlyBudget, expenses)
+        let newDailyBudget = calculateDailyBudget(monthlyBudget)
+        let newExpensesToday = calculateExpensesToday(expenses)
+        let newRemainingDailyBudget = calculateRemainingDailyBudget(newDailyBudget, newExpensesToday)
+
+        setRemainingMonthlyBudget(newRemainingMonthlyBudget)
+        setDailyBudget(newDailyBudget)
+        setExpensesToday(newExpensesToday)
+        setRemainingDailyBudget(newRemainingDailyBudget)
+    }, [monthlyBudget, expenses])
+
+    useEffect(() => {
+        let newNetWorth = calculateNetWorth(assets, debts)
+        setNetWorth(newNetWorth)
+    })
+
     const getData = async () => {
         try {
             setIsLoading(true)
 
             const date = new Date()
-            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1, 0)
-            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999)
+            const firstDay = new Date()
+            firstDay.setDate(date.getDate() - 29)
+            const lastDay = new Date()
+            lastDay.setDate(date.getDate())
     
             const [userMetadataRes, recurringIncomeRes, recurringExpensesRes, expensesRes, assetsRes, debtsRes] = await Promise.all([
                 axios.get(`/api/v1/Users`),
@@ -63,18 +134,13 @@ const Dashboard = () => {
             const expenses = expensesRes.data
             const assets = assetsRes.data
             const debts = debtsRes.data
-    
-            const monthlyBudget = getMonthlyBudget(recurringIncome, recurringExpenses, userMetadata.savingsGoal)
-            const remainingMonthlyBudget = getRemainingMonthlyBudget(monthlyBudget, expenses)
-            const dailyBudget = getDailyBudget(monthlyBudget)
-            const remainingDailyBudget = getRemainingDailyBudget(dailyBudget, expenses)
-            const netWorth = getNetWorth(assets, debts)
 
-            setMonthlyBudgetState(monthlyBudget)
-            setRemainingMonthlyBudgetState(remainingMonthlyBudget)
-            setDailyBudgetState(dailyBudget)
-            setRemainingDailyBudgetState(remainingDailyBudget)
-            setNetWorthState(netWorth)
+            setUserMetadata(userMetadata)
+            setRecurringIncomes(recurringIncome)
+            setRecurringExpenses(recurringExpenses)
+            setExpenses(expenses)
+            setAssets(assets)
+            setDebts(debts)
         }
         catch (error:any) {
             alert("Error occurred while getting data - " + error.message)
@@ -83,71 +149,6 @@ const Dashboard = () => {
         finally {
             setIsLoading(false)
         }
-    }
-
-    const getMonthlyBudget = (recurringIncome:any, recurringExpenses:any, savingsGoal:any) => {
-        let totalRecurringIncome = 0
-        let totalRecurringExpenses = 0
-
-        if (recurringIncome.length > 0) {
-            totalRecurringIncome = recurringIncome.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next)
-        }
-        if (recurringExpenses.length > 0) {
-            totalRecurringExpenses = recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
-        }
-        
-        return totalRecurringIncome - totalRecurringExpenses - savingsGoal
-    }
-
-    const getRemainingMonthlyBudget = (monthlyBudget:any, expenses : any) => {
-        let totalExpenses = 0
-
-        if (expenses.length > 0) {
-            totalExpenses = expenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
-        }
-         
-        return monthlyBudget - totalExpenses
-    }
-
-    const getDailyBudget = (monthlyBudget:any) => {
-        let now = new Date()
-        let daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
-        return monthlyBudget / daysInMonth
-    }
-
-    const getRemainingDailyBudget = (dailyBudget:any, expenses:any) => {
-        let totalDailyExpenses = 0
-        if (expenses?.length > 0) {
-            let dailyExpenses = expenses
-                .filter((e:any) => {
-                    let now = new Date()
-                    let date = new Date(e.date)
-                    return (
-                        date.getDate() === now.getDate() &&
-                        date.getMonth() === now.getMonth() &&
-                        date.getFullYear() === now.getFullYear()
-                    )
-                })
-            if (dailyExpenses.length > 0) {
-                totalDailyExpenses = dailyExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
-            }
-        }
-
-        return dailyBudget - totalDailyExpenses
-    }
-
-    const getNetWorth = (assets:any, debts:any) => {
-        let totalAssets = 0
-        let totalDebts = 0
-        
-        if (assets.length > 0) {
-            totalAssets = assets.map((a:any) => a.value).reduce((prev:any, next:any) => prev + next)
-        }
-        if (debts.length > 0) {
-            totalDebts = debts.map((d:any) => d.amount).reduce((prev:any, next:any) => prev + next)
-        }      
-
-        return totalAssets - totalDebts
     }
 
     if (isLoading) {
@@ -159,14 +160,9 @@ const Dashboard = () => {
     }
     else {
         return (
-            <Grid container spacing={4} padding={4}>
+            <Grid container spacing={2} padding={4}>
                 <Grid item lg={12}>
-                    <Typography variant={"h2"}>
-                        {formattedDate}
-                    </Typography>
-                </Grid>
-                <Grid item lg={12}>
-                    <Grid container spacing={4} alignItems="stretch">
+                    <Grid container spacing={2} alignItems="stretch">
                         <Grid item lg={7}>
                             <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
                                 <Box display="flex" justifyContent="center">
@@ -176,8 +172,8 @@ const Dashboard = () => {
                                                 Remaining Monthly Budget
                                             </Typography>
                                             <CircularProgressWithLabel 
-                                            value={(remainingMonthlyBudgetState / monthlyBudgetState) * 100} 
-                                            text={currencyFormatter(remainingMonthlyBudgetState)} />
+                                            value={(remainingMonthlyBudget / monthlyBudget) * 100} 
+                                            text={currencyFormatter(remainingMonthlyBudget)} />
                                         </Box>
                                     </Paper>
                                 </Box>
@@ -188,19 +184,14 @@ const Dashboard = () => {
                                                 Remaining Daily Budget
                                             </Typography>
                                             <CircularProgressWithLabel 
-                                            value={(remainingDailyBudgetState / dailyBudgetState) * 100} 
-                                            text={currencyFormatter(remainingDailyBudgetState)} />
+                                            value={(remainingDailyBudget / dailyBudget) * 100} 
+                                            text={currencyFormatter(remainingDailyBudget)} />
                                         </Box>
                                     </Paper> 
                                 </Box>
                                 <Box display="flex" justifyContent="center">
                                     <Paper sx={{padding:2, height:'100%'}} elevation={12}>
-                                        <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-                                            <Typography variant="h6">
-                                                Remaining Daily Budget
-                                            </Typography>
-                                            <CircularProgressWithLabel value={75} text="$30" />
-                                        </Box>
+                                        <TodaysSpending amount={expensesToday} setExpenses={setExpenses} />
                                     </Paper> 
                                 </Box>
                             </Stack>
@@ -213,7 +204,7 @@ const Dashboard = () => {
                                             Net Worth
                                         </Typography>
                                         <Typography>
-                                            {currencyFormatter(netWorthState)}
+                                            {currencyFormatter(netWorth)}
                                         </Typography>
                                     </Box>
                                 </Paper>
@@ -222,13 +213,24 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
                 <Grid item lg={12}>
-                    <Grid container spacing={4} alignItems="stretch">
+                    <Grid container spacing={2} alignItems="stretch">
                         <Grid item lg={7}>
-                            <Paper sx={{padding:2, height:'100%'}} elevation={8}>
-                                <Box display="flex" justifyContent="center" alignItems="center">
-                                    <Typography variant="h1">
-                                        Chart
-                                    </Typography>
+                            <Paper sx={{height:"500px"}}>
+                                <Box height="100%" padding={2}>
+                                    <ResponsiveContainer>
+                                        <BarChart
+                                            height={500}
+                                            width={730}
+                                            data={chartData}
+                                        >
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis dataKey="date" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="amount" fill="#d93511" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
                                 </Box>
                             </Paper>
                         </Grid>
