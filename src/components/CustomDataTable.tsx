@@ -3,14 +3,14 @@ import { timeframes } from "../timeframes";
 import { currencyFormatter } from "../tools/currencyFormatter";
 import { ViewColumnSharp } from "@mui/icons-material";
 import { faColumns } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ICustomDataTableProps {
     isSelectable: boolean
     tableData: any[]
     columns: { 
         label: string
-        accessor: keyof any
+        accessor: string
         type?: string
     }[]
     selectedRow?: any
@@ -21,6 +21,13 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
 
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [sorting, setSorting] = useState<{ column: string, order: 'asc' | 'desc' }>({column:"", order:"asc"})
+    const [sortedData, setSortedData] = useState<any[]>([])
+
+    useEffect(() => {
+        let col = sorting.column === "" ? props.columns[0].accessor : sorting.column
+        setSortedData(sortData(props.tableData, col, sorting.order))
+    }, [props.tableData, sorting])
 
     const handleRowSelect = (row:any) => {
         props.setSelectedRow((prevSelectedRow:any) =>
@@ -39,6 +46,26 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
         setPage(0);
     };
 
+    const handleSortRequest = (column: string) => {
+        setSorting((prevSorting:any) => ({
+            column,
+            order: prevSorting.column === column && prevSorting.order === 'asc' ? 'desc' : 'asc'
+        }))
+    }
+
+    const sortData = (data:any[], column:string, order: 'asc' | 'desc') => {
+        const sortedData = [...data].sort((a, b) => {
+            if (order === 'asc') {
+                return a[column] > b[column] ? 1 : -1
+            }
+            else {
+                return a[column] < b[column] ? 1 : -1
+            }
+        })
+
+        return sortedData
+    }
+
     return (
         <TableContainer component={Paper} sx={{height:"100%"}}>
             <Table size="small">
@@ -49,7 +76,11 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                         )}
                         {props.columns.map((col:any) => (
                             <TableCell key={col.label}>
-                                <TableSortLabel>
+                                <TableSortLabel
+                                    active={sorting?.column === col.accessor}
+                                    direction={sorting?.column === col.accessor ? sorting?.order : 'asc'}
+                                    onClick={() => handleSortRequest(col.accessor)}
+                                >
                                     {col.label}
                                 </TableSortLabel>
                             </TableCell>
@@ -57,7 +88,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.tableData.map((item, index) => (
+                    {sortedData.map((item, index) => (
                         <TableRow key={index}>
                             {props.isSelectable && (
                                 <TableCell padding="checkbox">

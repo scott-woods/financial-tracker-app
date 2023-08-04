@@ -15,7 +15,7 @@ interface IInvestmentsTabProps {
 
 const investmentColumns = [
     { label: "Name", accessor: "name" },
-    { label: "Amount", accessor: "amount" },
+    { label: "Amount", accessor: "amount", type: 'currency' },
     { label: "Timeframe", accessor: "timeframe" },
     { label: "Liquid?", accessor: "isFromLiquid", type: "checkbox" }
 ]
@@ -32,7 +32,6 @@ const InvestmentsTab = (props:IInvestmentsTabProps) => {
     useEffect(() => {
         setInvestmentsTableData(props.investmentList.map((i:any) => ({
             ...i,
-            amount: currencyFormatter(i.amount),
             timeframe: timeframes.find(t => t.value === i.timeframe).label
         })))
     }, [props.investmentList])
@@ -74,8 +73,8 @@ const InvestmentsTab = (props:IInvestmentsTabProps) => {
         <>
             {props.show && (
                 <>
-                    <Stack height="100%" width="100%" spacing={2}>
-                        <Stack direction="row" spacing={2}>
+                    <Box height="100%" display="table" width="100%">
+                        <Stack direction="row" spacing={2} marginBottom={2}>
                             <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
                             {selectedRow !== null && (
                                 <>
@@ -84,38 +83,18 @@ const InvestmentsTab = (props:IInvestmentsTabProps) => {
                                 </>
                             )}
                         </Stack>
-                        <Box height="100%">
-                            <CustomDataTable
-                                isSelectable={true}
-                                tableData={investmentsTableData}
-                                columns={investmentColumns}
-                                selectedRow={selectedRow}
-                                setSelectedRow={setSelectedRow}
-                            />
+                        <Box display="table-row" width="100%" height="100%" position="relative">
+                            <Box position="absolute" sx={{overflowY:"auto", left:0, top:0, right:0, bottom:0}}>
+                                <CustomDataTable
+                                    isSelectable={true}
+                                    tableData={investmentsTableData}
+                                    columns={investmentColumns}
+                                    selectedRow={selectedRow}
+                                    setSelectedRow={setSelectedRow}
+                                />
+                            </Box>
                         </Box>
-                    </Stack>
-                    {/* <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Stack direction="row" spacing={2}>
-                                <Button color="primary" variant="contained" onClick={handleAddClicked}>Add</Button>
-                                {selectedRow !== null && (
-                                    <>
-                                        <Button color="primary" variant="outlined" onClick={handleEditClicked}>Edit</Button>
-                                        <Button color="error" variant="contained" onClick={handleDeleteClicked}>Delete</Button>
-                                    </>
-                                )}
-                            </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <CustomDataTable
-                                isSelectable={true}
-                                tableData={investmentsTableData}
-                                columns={investmentColumns}
-                                selectedRow={selectedRow}
-                                setSelectedRow={setSelectedRow}
-                            />
-                        </Grid>
-                    </Grid> */}
+                    </Box>
                     <AddEditInvestmentModal
                         show={showAddEditModal}
                         isEditing={isEditing}

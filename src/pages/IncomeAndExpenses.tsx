@@ -71,7 +71,7 @@ const IncomeAndExpenses = () => {
                 </Box>
                 <Box height="100%">
                     <Paper sx={{display:'flex', height:"100%"}}>
-                        <Stack sx={{width:'100%'}}>
+                        <Stack sx={{width:'100%'}} height="100%">
                             <Tabs onChange={handleTabChange} value={tabIndex}>
                                 <Tab label="Income"></Tab>
                                 <Tab label="Investments"></Tab>
