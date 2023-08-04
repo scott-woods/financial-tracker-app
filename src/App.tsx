@@ -9,6 +9,7 @@ import LoggedOut from './pages/LoggedOut';
 import AssetsAndDebts from './pages/AssetsAndDebts';
 import IncomeAndExpenses from './pages/IncomeAndExpenses';
 import Dashboard from './pages/Dashboard';
+import ManageSavingsGoals from './pages/ManageSavingsGoals';
 
 function App() {
 
@@ -20,12 +21,13 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/loggedout" element={<LoggedOut />} />
         <Route path="/*" element={<NotFound />} />
-        <Route path="/" element={<Layout />}>
-          <Route element={<AuthRequired />}>
+        <Route element={<AuthRequired />}>
+          <Route path="/" element={<Layout />}>
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard /> } />
               <Route path="income-and-expenses" element={<IncomeAndExpenses />} />
               <Route path="assets-and-debts" element={<AssetsAndDebts />} />
+              <Route path="savings-goals" element={<ManageSavingsGoals />} />
           </Route>
         </Route>
       </Route>

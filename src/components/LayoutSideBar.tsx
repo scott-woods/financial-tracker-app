@@ -1,5 +1,5 @@
 import { Drawer, Toolbar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
-import { Home, CurrencyExchange, Savings } from "@mui/icons-material";
+import { Home, CurrencyExchange, Savings, Flag } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../hooks/useAppSelector";
@@ -52,6 +52,14 @@ const LayoutSideBar = () => {
                                 <Savings />
                             </ListItemIcon>
                             <ListItemText sx={{wordWrap:"break-word"}} primary="Assets & Debts" />
+                        </ListItemButton>
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemButton onClick={() => handleItemClicked("savings-goals")} selected={selectedPage === 3}>
+                            <ListItemIcon>
+                                <Flag />
+                            </ListItemIcon>
+                            <ListItemText sx={{wordWrap:"break-word"}} primary="Manage Savings Goals" />
                         </ListItemButton>
                     </MenuItem>
                 </List>

@@ -64,20 +64,43 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                                     <Checkbox checked={props.selectedRow === item.id} onChange={() => handleRowSelect(item.id)} />
                                 </TableCell>
                             )}
-                            {props.columns.map((col) => (
-                                <>
-                                    {col.type === "checkbox" && (
-                                        <TableCell padding="checkbox" key={col.label}>
-                                            <Checkbox disabled checked={item[col.accessor]} />
-                                        </TableCell>
-                                    )}
-                                    {col.type !== "checkbox" && (
-                                        <TableCell key={col.label}>
-                                            {item[col.accessor]}
-                                        </TableCell>
-                                    )}
-                                </>
-                            ))}
+                            {props.columns.map((col:any) => {
+                                switch (col.type) {
+                                    case "checkbox":
+                                        return (
+                                            <TableCell padding="checkbox" key={col.label}>
+                                                <Checkbox disabled checked={item[col.accessor]} />
+                                            </TableCell>
+                                        )
+                                    case "date":
+                                        const date = new Date(item[col.accessor])
+                                        const formattedDate = new Intl.DateTimeFormat('en-US', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: 'numeric',
+                                            minute: '2-digit',
+                                            hour12: true
+                                        }).format(date)
+                                        return (
+                                            <TableCell key={col.label}>
+                                                {formattedDate}
+                                            </TableCell>
+                                        )
+                                    case "currency":
+                                        return (
+                                            <TableCell key={col.label}>
+                                                {currencyFormatter(item[col.accessor])}
+                                            </TableCell>
+                                        )
+                                    default:
+                                        return (
+                                            <TableCell key={col.label}>
+                                                {item[col.accessor]}
+                                            </TableCell>
+                                        )
+                                }
+                            })}
                         </TableRow>
                     ))}
                 </TableBody>

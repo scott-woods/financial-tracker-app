@@ -2,6 +2,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Outlet, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import Loading from '../components/Loading';
+import { Box } from '@mui/material';
 
 
 export const AuthContext = createContext<any | null | undefined>(null)
@@ -36,8 +38,9 @@ const AuthRequired = () => {
 
     if (isLoading || isAuthLoading) {
         return (
-            //TODO add loading spinner
-            <p>Loading...</p>
+            <Box display="flex" height="100vh" justifyContent="center">
+                <Loading />
+            </Box>
         )
     }
     else {

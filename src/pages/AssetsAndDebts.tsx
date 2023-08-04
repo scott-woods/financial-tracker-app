@@ -6,6 +6,7 @@ import axios from "axios";
 import { currencyFormatter } from "../tools/currencyFormatter";
 import AssetsAndDebtsEditor from "../components/AssetsAndDebts/AssetsAndDebtsEditor";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import Loading from "../components/Loading";
 
 
 const AssetsAndDebts = () => {
@@ -127,7 +128,7 @@ const AssetsAndDebts = () => {
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <Loading />
         )
     }
     else {

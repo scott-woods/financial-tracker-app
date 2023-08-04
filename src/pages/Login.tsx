@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import Loading from '../components/Loading';
 
 const Login = () => {
 
@@ -12,7 +13,7 @@ const Login = () => {
                 <p>Authentication Error - {error.message}</p>
             )}
             {!error && isLoading && (
-                <p>Loading...</p>
+                <Loading />
             )}
             {!error && !isLoading && (
                 <>

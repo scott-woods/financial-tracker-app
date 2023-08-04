@@ -8,6 +8,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setSelectedPage } from "../state/slices/selectedPageSlice";
 import { timeframes } from "../timeframes";
+import Loading from "../components/Loading";
 
 const IncomeAndExpenses = () => {
 
@@ -55,7 +56,7 @@ const IncomeAndExpenses = () => {
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <Loading />
         )
     }
     else {

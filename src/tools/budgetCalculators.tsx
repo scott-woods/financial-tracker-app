@@ -1,14 +1,6 @@
-export const calculateMonthlyBudget = (recurringIncomes:any, recurringExpenses:any, userMetadata:any) => {
+export const calculateMonthlyBudget = (totalRecurringIncome:any, totalRecurringExpenses:any, userMetadata:any) => {
     let newMonthlyBudget = 0
-
-    if (recurringIncomes.length > 0) {
-        let totalRecurringIncome = recurringIncomes.map((i:any) => i.amount).reduce((prev:any, next:any) => prev + next)
-        newMonthlyBudget += totalRecurringIncome
-    }
-    if (recurringExpenses.length > 0) {
-        let totalRecurringExpenses = recurringExpenses.map((e:any) => e.amount).reduce((prev:any, next:any) => prev + next)
-        newMonthlyBudget -= totalRecurringExpenses
-    }
+    newMonthlyBudget = totalRecurringIncome - totalRecurringExpenses
     if (userMetadata?.savingsGoal) {
         newMonthlyBudget -= userMetadata.savingsGoal
     }

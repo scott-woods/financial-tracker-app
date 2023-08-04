@@ -12,3 +12,31 @@ export const calculateNetWorth = (assets:any, debts:any) => {
 
     return newNetWorth
 }
+
+export const calculateAssetsValues = (assets:any) => {
+    let newTotalAssetsValue = 0
+    let newTotalLiquidAssetsValue = 0
+    let newTotalNonLiquidAssetsValue = 0
+
+    assets.forEach((asset:any) => {
+        newTotalAssetsValue += asset.value
+        if (asset.isLiquid) {
+            newTotalLiquidAssetsValue += asset.value
+        }
+        else if (!asset.isLiquid) {
+            newTotalNonLiquidAssetsValue += asset.value
+        }
+    })
+
+    return { newTotalAssetsValue, newTotalLiquidAssetsValue, newTotalNonLiquidAssetsValue }
+}
+
+export const calculateDebtsAmount = (debts:any) => {
+    let newTotalDebtsAmount = 0
+
+    if (debts.length > 0) {
+        newTotalDebtsAmount = debts.map((d:any) => d.amount).reduce((prev:any, next:any) => prev + next)
+    }
+
+    return newTotalDebtsAmount
+}

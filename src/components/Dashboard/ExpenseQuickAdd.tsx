@@ -5,12 +5,15 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { timeframes } from "../../timeframes"
+import { useEffect } from "react"
 
 
 interface IExpenseQuickAddProps {
     show: boolean
     handleClose: any
     setExpenses: any
+    isEditing?: boolean
+    selectedExpense?: any
 }
 
 interface IExpenseQuickAddValues {
@@ -30,15 +33,48 @@ const validationSchema = Yup.object().shape({
 
 const ExpenseQuickAdd = (props:IExpenseQuickAddProps) => {
 
+    useEffect(() => {
+        if (props.selectedExpense) {
+            formik.setValues(props.selectedExpense)
+        }
+        else {
+            formik.setValues(defaultValues)
+        }
+    }, [props.selectedExpense])
+
+    useEffect(() => {
+        if (!props.isEditing) {
+            formik.resetForm()
+        }
+        else if (props.selectedExpense) {
+            formik.setValues(props.selectedExpense)
+        }
+    }, [props.isEditing])
+
     const handleSubmit = async (values:any) => {
         try {
-            await axios
-            .post('/api/v1/Expenses', values)
-            .then((res:any) => {
-                if (res.data) {
-                    props.setExpenses((prevData:any) => [...prevData, res.data])
-                }
-            })
+            if (!props.isEditing) {
+                await axios
+                .post('/api/v1/Expenses', values)
+                .then((res:any) => {
+                    if (res.data) {
+                        props.setExpenses((prevData:any) => [...prevData, res.data])
+                    }
+                })
+            }
+            else if (props.isEditing) {
+                await axios
+                    .put('/api/v1/Expenses', values)
+                    .then((res:any) => {
+                        if (res.data) {
+                            props.setExpenses((prevData:any) => {
+                                return prevData.map((i:any) => {
+                                    return i.id === props.selectedExpense.id ? {...i, ...values } : i
+                                })
+                            })
+                        }
+                    })
+            }
         }
         catch (error) {
             console.log(error)
@@ -61,7 +97,7 @@ const ExpenseQuickAdd = (props:IExpenseQuickAddProps) => {
         <Dialog open={props.show} maxWidth="sm">
             <form onSubmit={formik.handleSubmit}>
                 <DialogTitle>
-                    Add New Expense
+                    {props.isEditing ? "Edit Expense" : "Add Expense"}
                 </DialogTitle>
                 <DialogContent>
                     <Grid container padding={2} spacing={4}>
