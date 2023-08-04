@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { currencyFormatter } from "../tools/currencyFormatter";
 import AssetsAndDebtsEditor from "../components/AssetsAndDebts/AssetsAndDebtsEditor";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Loading from "../components/Loading";
 
 
@@ -60,7 +60,11 @@ const AssetsAndDebts = () => {
     }, [assets, debts])
 
     useEffect(() => {
-        let newChartData = reports.map((report:any) => {
+        let newChartData = reports.sort((a, b) => {
+            let aDate = new Date(a.date)
+            let bDate = new Date(b.date)
+            return aDate.getTime() - bDate.getTime()
+        }).map((report:any) => {
             return {
                 netWorth: report.totalAssets - report.totalDebts,
                 totalAssets: report.totalAssets,
@@ -161,19 +165,20 @@ const AssetsAndDebts = () => {
                         <Paper sx={{height:"100%"}}>
                             <Stack height="100%">
                                 <Box height="100%" padding={2}>
-                                    <ResponsiveContainer>
-                                        <BarChart
+                                    <ResponsiveContainer height="100%" width="100%">
+                                        <LineChart
                                             data={chartData}
+                                            margin={{left:20}}
                                         >
                                             <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="date" reversed hide={true} />
-                                            <YAxis />
-                                            <Tooltip />
+                                            <XAxis dataKey="date" hide={true} />
+                                            <YAxis tickFormatter={(value) => currencyFormatter(value)} />
+                                            <Tooltip separator=": " formatter={(value) => currencyFormatter(value as number)} />
                                             <Legend />
-                                            <Bar dataKey="netWorth" fill="#11d935" />
-                                            <Bar label="Assets" dataKey="totalAssets" fill="#3511d9" />
-                                            <Bar label="Debts" dataKey="totalDebts" fill="#d93511" />
-                                        </BarChart>
+                                            <Line type="monotone" dataKey="netWorth" name="Net Worth" stroke="#11d935" />
+                                            <Line type="monotone" dataKey="totalAssets" name="Assets" stroke="#3511d9" />
+                                            <Line type="monotone" dataKey="totalDebts" name="Debts" stroke="#d93511" />
+                                        </LineChart>
                                     </ResponsiveContainer>
                                 </Box>
                             </Stack>

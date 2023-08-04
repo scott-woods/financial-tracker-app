@@ -22,6 +22,7 @@ import { calculateExpensesThisMonth, calculateExpensesToday, calculateTotalRecur
 import { calculateAssetsValues, calculateDebtsAmount, calculateNetWorth } from "../tools/valueCalculators";
 import Loading from "../components/Loading";
 import RecentExpenses from "../components/Dashboard/RecentExpenses";
+import { shortDate } from "../tools/shortDate";
 
 
 const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -279,13 +280,14 @@ const Dashboard = () => {
                                 <ResponsiveContainer>
                                     <BarChart
                                         data={chartData}
+                                        margin={{left:20}}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis hide dataKey="date" />
-                                        <YAxis />
-                                        <Tooltip />
+                                        <XAxis dataKey="date" tickFormatter={(value) => shortDate(value)} />
+                                        <YAxis tickFormatter={(value) => currencyFormatter(value)} />
+                                        <Tooltip separator=": " formatter={(value) => currencyFormatter(value as number)} labelFormatter={(label) => shortDate(label)} />
                                         <Legend />
-                                        <Bar dataKey="amount" fill="#d93511" />
+                                        <Bar name="Daily Spending" dataKey="amount" fill="#d93511" />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </Box>

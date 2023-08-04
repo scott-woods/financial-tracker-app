@@ -25,7 +25,17 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
     const [sortedData, setSortedData] = useState<any[]>([])
 
     useEffect(() => {
-        let col = sorting.column === "" ? props.columns[0].accessor : sorting.column
+        let col = ""
+        if (sorting.column === "") {
+            col = props.columns[0].accessor
+            setSorting((prevSorting:any) => ({
+                column: props.columns[0].accessor,
+                order: prevSorting.order
+            }))
+        }
+        else {
+            col = sorting.column
+        }
         setSortedData(sortData(props.tableData, col, sorting.order))
     }, [props.tableData, sorting])
 
@@ -77,8 +87,8 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                         {props.columns.map((col:any) => (
                             <TableCell key={col.label}>
                                 <TableSortLabel
-                                    active={sorting?.column === col.accessor}
-                                    direction={sorting?.column === col.accessor ? sorting?.order : 'asc'}
+                                    active={sorting.column === col.accessor}
+                                    direction={sorting.column === col.accessor ? sorting?.order : 'asc'}
                                     onClick={() => handleSortRequest(col.accessor)}
                                 >
                                     {col.label}
