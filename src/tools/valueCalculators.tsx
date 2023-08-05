@@ -10,7 +10,7 @@ export const calculateNetWorth = (assets:any, debts:any) => {
         newNetWorth -= totalDebts
     }      
 
-    return newNetWorth
+    return parseFloat(newNetWorth.toFixed(2))
 }
 
 export const calculateAssetsValues = (assets:any) => {
@@ -28,6 +28,10 @@ export const calculateAssetsValues = (assets:any) => {
         }
     })
 
+    newTotalAssetsValue = parseFloat(newTotalAssetsValue.toFixed(2))
+    newTotalLiquidAssetsValue = parseFloat(newTotalLiquidAssetsValue.toFixed(2))
+    newTotalNonLiquidAssetsValue = parseFloat(newTotalNonLiquidAssetsValue.toFixed(2))
+
     return { newTotalAssetsValue, newTotalLiquidAssetsValue, newTotalNonLiquidAssetsValue }
 }
 
@@ -38,5 +42,5 @@ export const calculateDebtsAmount = (debts:any) => {
         newTotalDebtsAmount = debts.map((d:any) => d.amount).reduce((prev:any, next:any) => prev + next)
     }
 
-    return newTotalDebtsAmount
+    return parseFloat(newTotalDebtsAmount.toFixed(2))
 }

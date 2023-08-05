@@ -6,9 +6,9 @@ const getNextValue = (next:any) => {
 
     switch (next.timeframe) {
         case monthlyIndex:
-            return next.amount
+            return parseFloat(next.amount.toFixed(2))
         case yearlyIndex:
-            return next.amount / 12
+            return parseFloat((next.amount / 12).toFixed(2))
         default:
             return 0
     }
@@ -34,7 +34,7 @@ export const calculateExpensesToday = (expenses:any) => {
         }
     }
 
-    return newExpensesToday
+    return parseFloat(newExpensesToday.toFixed(2))
 }
 
 export const calculateExpensesThisMonth = (expenses:any) => {
@@ -58,7 +58,7 @@ export const calculateExpensesThisMonth = (expenses:any) => {
         }
     }
 
-    return newExpensesThisMonth
+    return parseFloat(newExpensesThisMonth.toFixed(2))
 }
 
 export const calculateTotalRecurringIncome = (recurringIncomes:any) => {
@@ -70,7 +70,7 @@ export const calculateTotalRecurringIncome = (recurringIncomes:any) => {
         }, 0)
     }
 
-    return newTotalRecurringIncome
+    return parseFloat(newTotalRecurringIncome.toFixed(2))
 }
 
 export const calculateTotalRecurringExpenses = (recurringExpenses:any) => {
@@ -82,5 +82,5 @@ export const calculateTotalRecurringExpenses = (recurringExpenses:any) => {
         }, 0)
     }
     
-    return newTotalRecurringExpenses
+    return parseFloat(newTotalRecurringExpenses.toFixed(2))
 }

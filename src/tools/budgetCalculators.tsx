@@ -1,11 +1,11 @@
-export const calculateMonthlyBudget = (totalRecurringIncome:any, totalRecurringExpenses:any, userMetadata:any) => {
+export const calculateMonthlyBudget = (totalRecurringIncome:any, totalRecurringExpenses:any, savingsGoal:number) => {
     let newMonthlyBudget = 0
     newMonthlyBudget = totalRecurringIncome - totalRecurringExpenses
-    if (userMetadata?.savingsGoal) {
-        newMonthlyBudget -= userMetadata.savingsGoal
+    if (savingsGoal) {
+        newMonthlyBudget -= savingsGoal
     }
 
-    return newMonthlyBudget
+    return parseFloat(newMonthlyBudget.toFixed(2))
 }
 
 export const calculateRemainingMonthlyBudget = (monthlyBudget:number, expenses:any) => {
@@ -31,7 +31,7 @@ export const calculateRemainingMonthlyBudget = (monthlyBudget:number, expenses:a
         }
     }
 
-    return newRemainingMonthlyBudget
+    return parseFloat(newRemainingMonthlyBudget.toFixed(2))
 }
 
 export const calculateDailyBudget = (monthlyBudget:number) => {
@@ -46,5 +46,5 @@ export const calculateRemainingDailyBudget = (dailyBudget:number, expensesToday:
     newRemainingDailyBudget += dailyBudget
     newRemainingDailyBudget -= expensesToday
 
-    return newRemainingDailyBudget
+    return parseFloat(newRemainingDailyBudget.toFixed(2))
 }

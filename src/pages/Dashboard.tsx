@@ -96,7 +96,7 @@ const Dashboard = () => {
     useEffect(() => {
         let newTotalRecurringIncome = calculateTotalRecurringIncome(recurringIncomes)
         let newTotalRecurringExpenses = calculateTotalRecurringExpenses(recurringExpenses)
-        let newMonthlyBudget = calculateMonthlyBudget(newTotalRecurringIncome, newTotalRecurringExpenses, userMetadata)
+        let newMonthlyBudget = calculateMonthlyBudget(newTotalRecurringIncome, newTotalRecurringExpenses, userMetadata?.savingsGoal)
 
         setTotalRecurringIncome(newTotalRecurringIncome)
         setTotalRecurringExpenses(newTotalRecurringExpenses)
