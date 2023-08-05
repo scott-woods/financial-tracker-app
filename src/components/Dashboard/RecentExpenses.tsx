@@ -20,36 +20,34 @@ const RecentExpenses = (props:IRecentExpensesProps) => {
 
     return (
         <>
-            <Box height="100%" padding={2}>
-                <Stack height="100%">
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="h6">
-                            Recent Expenses
-                        </Typography>
-                        <IconButton onClick={handleManageClicked} aria-label="manage-expenses">
-                            <MoreHoriz />
-                        </IconButton>
-                    </Box>
-                    <Box height="100%">
-                        <List>
-                            {props.expenses.slice(0, 5).map((expense:any) => {
-                                let text = currencyFormatter(expense.amount)
-                                if (expense.name) {
-                                    text += ` - ${expense.name}`
-                                }
-                                return (
-                                    <>
-                                        <ListItem>
-                                            <ListItemText primary={text} />
-                                        </ListItem>
-                                        <Divider variant="middle" />
-                                    </>
-                                )
-                            })}
-                        </List>
-                    </Box>
-                </Stack>
-            </Box>
+            <Stack height="100%">
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Typography variant="h6">
+                        Recent Expenses
+                    </Typography>
+                    <IconButton onClick={handleManageClicked} aria-label="manage-expenses">
+                        <MoreHoriz />
+                    </IconButton>
+                </Box>
+                <Box height="100%">
+                    <List dense>
+                        {props.expenses.slice(0, 5).map((expense:any) => {
+                            let text = currencyFormatter(expense.amount)
+                            if (expense.name) {
+                                text += ` - ${expense.name}`
+                            }
+                            return (
+                                <>
+                                    <ListItem>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                    <Divider variant="middle" />
+                                </>
+                            )
+                        })}
+                    </List>
+                </Box>
+            </Stack>
             <ManageExpensesDialog
                     show={showManageExpensesDialog}
                     setShow={setShowManageExpensesDialog}
