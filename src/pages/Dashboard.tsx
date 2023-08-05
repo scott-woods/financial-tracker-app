@@ -23,6 +23,8 @@ import { calculateAssetsValues, calculateDebtsAmount, calculateNetWorth } from "
 import Loading from "../components/Loading";
 import RecentExpenses from "../components/Dashboard/RecentExpenses";
 import { shortDate } from "../tools/shortDate";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 
 const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -253,9 +255,15 @@ const Dashboard = () => {
                                             Monthly Budget
                                         </Typography>
                                         <Box height="100%" display="flex" justifyContent="center" alignItems="center">
-                                            <CircularProgressWithLabel 
+                                            <CircularProgressbar
+                                                minValue={0}
+                                                maxValue={monthlyBudget}
+                                                value={remainingMonthlyBudget}
+                                                text={currencyFormatter(remainingMonthlyBudget)}
+                                            />
+                                            {/* <CircularProgressWithLabel 
                                                 value={(remainingMonthlyBudget / monthlyBudget) * 100} 
-                                                text={currencyFormatter(remainingMonthlyBudget)} />
+                                                text={currencyFormatter(remainingMonthlyBudget)} /> */}
                                         </Box>
                                     </Stack>
                                 </Paper>
@@ -267,9 +275,18 @@ const Dashboard = () => {
                                             Daily Budget
                                         </Typography>
                                         <Box height="100%" display="flex" justifyContent="center" alignItems="center">
-                                            <CircularProgressWithLabel 
+                                            <CircularProgressbar
+                                                minValue={0}
+                                                maxValue={dailyBudget}
+                                                value={remainingDailyBudget}
+                                                text={currencyFormatter(remainingDailyBudget)}
+                                                styles={buildStyles({
+                                                    pathColor: `#86608E`
+                                                })}
+                                            />
+                                            {/* <CircularProgressWithLabel 
                                                 value={(remainingDailyBudget / dailyBudget) * 100} 
-                                                text={currencyFormatter(remainingDailyBudget)} />
+                                                text={currencyFormatter(remainingDailyBudget)} /> */}
                                         </Box>
                                     </Stack>
                                 </Paper>
