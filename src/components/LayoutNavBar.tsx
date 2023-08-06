@@ -26,7 +26,7 @@ const LayoutNavBar = () => {
                 noWrap
                 sx={{ flexGrow: 1 }}
                 >
-                    Financial Tracker
+                    Budget Craft
                 </Typography>
                 <a href="#" onClick={handleLogout} className="nav-link px-2 text-dark">Sign Out</a>
             </Toolbar>

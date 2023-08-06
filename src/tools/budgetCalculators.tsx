@@ -30,7 +30,7 @@ export const calculateRemainingMonthlyBudget = (monthlyBudget:number, expenses:a
             newRemainingMonthlyBudget -= totalExpenses
         }
     }
-
+    
     return parseFloat(newRemainingMonthlyBudget.toFixed(2))
 }
 

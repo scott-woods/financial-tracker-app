@@ -13,6 +13,8 @@ import axios from 'axios';
 import { Provider } from 'react-redux';
 import store, { persistor } from './state/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { themeOptions } from './themeOptions';
 
 
 const domain : string = process.env.REACT_APP_AUTH0_DOMAIN as string;
@@ -26,6 +28,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   //<React.StrictMode>
+    <ThemeProvider theme={createTheme(themeOptions)}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Auth0Provider
@@ -41,6 +44,7 @@ root.render(
           </Auth0Provider>
         </PersistGate>
       </Provider>
+    </ThemeProvider>
   //</React.StrictMode>
 );
 

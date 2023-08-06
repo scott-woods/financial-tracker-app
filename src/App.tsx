@@ -10,6 +10,7 @@ import AssetsAndDebts from './pages/AssetsAndDebts';
 import IncomeAndExpenses from './pages/IncomeAndExpenses';
 import Dashboard from './pages/Dashboard';
 import ManageSavingsGoals from './pages/ManageSavingsGoals';
+import Error from './pages/Error';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route>
+      <Route errorElement={<Error />}>
         <Route path="/login" element={<Login />} />
         <Route path="/loggedout" element={<LoggedOut />} />
         <Route path="/*" element={<NotFound />} />
