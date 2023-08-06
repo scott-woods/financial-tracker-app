@@ -1,7 +1,7 @@
 import { Clear } from "@mui/icons-material";
 import { Box, Button, Fab, FormControlLabel, Grid, Paper, Stack, TextField } from "@mui/material";
 import axios from "axios"
-import { Field, FieldArray, FormikProvider, useFormik } from "formik"
+import { Field, FieldArray, FormikProvider, getIn, useFormik } from "formik"
 import { useEffect, useState } from "react"
 import * as Yup from "yup";
 
@@ -87,13 +87,13 @@ const DebtsEditor = (props:IDebtsEditorProps) => {
     return (
         <Box padding={2} height="100%" display="table" width="100%">
             {!isEditing && (
-                <Button color="primary" variant="contained" sx={{marginY:2}} onClick={handleUpdateClicked}>
+                <Button color="primary" variant="contained" sx={{marginBottom:2}} onClick={handleUpdateClicked}>
                     Update
                 </Button>
             )}
             {isEditing && (
                 <form onSubmit={formik.handleSubmit}>
-                    <Stack direction="row" spacing={2} sx={{marginY:2}}>
+                    <Stack direction="row" spacing={2} sx={{marginBottom:2}}>
                         <Button color="error" variant="outlined" onClick={handleCancelClicked}>
                             Cancel
                         </Button>
@@ -106,47 +106,65 @@ const DebtsEditor = (props:IDebtsEditorProps) => {
                     <FormikProvider value={formik}>
                         <FieldArray name="debts">
                             {({ insert, remove, push }) => (
-                                <Grid container spacing={2} padding={2}>
-                                    {formik.values.debts.map((debt:any, index:any) => (
-                                        <Grid item xs={12} key={index}>
-                                            <Grid container spacing={2} wrap="nowrap">
+                                <Box display="flex" flexDirection="column" padding={2} gap={2}>
+                                    {formik.values.debts.map((debt:any, index:any) => {
+                                        const name = `debts.${index}.name`
+                                        const touchedName = getIn(formik.touched, name)
+                                        const errorName = getIn(formik.errors, name)
+
+                                        const amount = `debts.${index}.amount`
+                                        const touchedAmount = getIn(formik.touched, amount)
+                                        const errorAmount = getIn(formik.errors, amount)
+                                        return (
+                                            <Box display="flex" gap={2}>
                                                 <Field
                                                     type="hidden"
                                                     name={`debts.${index}.id`}
                                                 />
-                                                <Grid item flexGrow={4}>
-                                                    <Field
-                                                        name={`debts.${index}.name`}
-                                                        as={TextField}
-                                                        label="Name"
-                                                        disabled={!isEditing}
-                                                    />
-                                                </Grid>
-                                                <Grid item flexGrow={2}>
-                                                    <Field
-                                                        name={`debts.${index}.amount`}
-                                                        as={TextField}
-                                                        label="Amount"
-                                                        type="number"
-                                                        disabled={!isEditing}
-                                                    />
-                                                </Grid>
+                                                <TextField
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    name={name}
+                                                    value={debt.name}
+                                                    label="Name"
+                                                    helperText={
+                                                        touchedName && errorName
+                                                            ? errorName
+                                                            : ""
+                                                    }
+                                                    error={Boolean(touchedName && errorName)}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
+                                                <TextField
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    name={amount}
+                                                    value={debt.amount}
+                                                    label="Amount"
+                                                    helperText={
+                                                        touchedAmount && errorAmount
+                                                            ? errorAmount
+                                                            : ""
+                                                    }
+                                                    error={Boolean(touchedAmount && errorAmount)}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
                                                 {isEditing && (
-                                                    <Grid item flexGrow={0} alignSelf="center">
-                                                        <Fab size="small" color="error" onClick={() => remove(index)}>
-                                                            <Clear />
-                                                        </Fab>
-                                                    </Grid>
+                                                    <Fab size="small" color="error" onClick={() => remove(index)}>
+                                                        <Clear />
+                                                    </Fab>
                                                 )}
-                                            </Grid>
-                                        </Grid>
-                                    ))}
-                                    <Grid item xs={12}>
+                                            </Box>
+                                        )
+                                    })}
+                                    <Box display="flex">
                                         <Button color="primary" variant="outlined" disabled={!isEditing} onClick={() => push({ name: '', amount: 0 })}>
                                             Add
                                         </Button>
-                                    </Grid>
-                                </Grid>
+                                    </Box>
+                                </Box>
                             )}
                         </FieldArray>
                     </FormikProvider>

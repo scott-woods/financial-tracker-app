@@ -26,18 +26,12 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
 
     //sorting
     useEffect(() => {
-        let col = ""
-        if (sorting.column === "") {
-            col = props.columns[0].accessor
-            setSorting((prevSorting:any) => ({
-                column: props.columns[0].accessor,
-                order: prevSorting.order
-            }))
+        if (props.columns.find(c => c.accessor === sorting.column)) {
+            setSortedData(sortData(props.tableData, sorting.column, sorting.order))
         }
         else {
-            col = sorting.column
+            setSortedData(props.tableData)
         }
-        setSortedData(sortData(props.tableData, col, sorting.order))
     }, [props.tableData, sorting])
 
     const handleRowSelect = (row:any) => {

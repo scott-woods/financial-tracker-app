@@ -135,7 +135,12 @@ const Dashboard = () => {
                         <Box flexGrow={2}>
                             <Box display="flex" gap={2} height="100%">
                                 <Paper sx={{padding:2, flexGrow:1}}>
-                                    <DailySpendingChart expenses={expenses} />
+                                    <DailySpendingChart
+                                        expenses={expenses}
+                                        recurringIncomes={recurringIncomes}
+                                        recurringExpenses={recurringExpenses}
+                                        userMetadata={userMetadata}
+                                    />
                                 </Paper>
                                 <Paper sx={{padding:2, flexGrow:0}}>
                                     <RecentExpenses expenses={expenses} setExpenses={setExpenses} />

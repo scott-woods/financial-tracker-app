@@ -81,12 +81,12 @@ const ManageExpensesDialog = (props:IManageExpensesDialogProps) => {
                             )}
                         </Stack>
                         <CustomDataTable
-                        isSelectable
-                        tableData={props.expenses}
-                        columns={expensesTableColumns}
-                        selectedRow={selectedRow}
-                        setSelectedRow={setSelectedRow}
-                    />
+                            isSelectable
+                            tableData={props.expenses}
+                            columns={expensesTableColumns}
+                            selectedRow={selectedRow}
+                            setSelectedRow={setSelectedRow}
+                        />
                     </Stack>
                 </DialogContent>
                 <DialogActions>

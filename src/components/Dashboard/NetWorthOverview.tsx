@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { calculateAssetsValues, calculateDebtsAmount, calculateNetWorth } from "../../tools/valueCalculators"
-import { Box, Divider, Stack, Typography } from "@mui/material"
+import { Box, Divider, LinearProgress, Stack, Typography } from "@mui/material"
 import { currencyFormatter } from "../../tools/currencyFormatter"
 
 interface INetWorthOverviewProps {
@@ -30,29 +30,27 @@ const NetWorthOverview = (props:INetWorthOverviewProps) => {
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-evenly" height="100%">
-            <Stack spacing={1}>
-                <Typography variant="h6">
+            <Stack>
+                <Typography variant="h6" fontWeight="lighter">
                     Net Worth
                 </Typography>
-                <Divider />
                 <Typography variant="h3" fontWeight="bold">
                     {currencyFormatter(netWorth)}
                 </Typography>
             </Stack>
-            <Stack spacing={1}>
-                <Typography variant="h6">
+            <Stack>
+                <Typography variant="h6" fontWeight="lighter">
                     Assets
                 </Typography>
-                <Divider />
                 <Typography variant="h4" fontWeight="bold">
                     {currencyFormatter(totalAssetsValue)}
                 </Typography>
                 <Stack>
-                    <Typography variant="subtitle2">
-                        Liquid
-                    </Typography>
-                    <Typography variant="h5" fontWeight="bold">
+                    <Typography variant="h5" fontWeight="bold" sx={{textIndent:"10px"}}>
                         {currencyFormatter(totalLiquidAssetsValue)}
+                    </Typography>
+                    <Typography variant="subtitle2" fontWeight="lighter" sx={{textIndent:"10px"}}>
+                        Liquid
                     </Typography>
                 </Stack>
                 <Stack>

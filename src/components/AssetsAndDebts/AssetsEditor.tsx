@@ -90,13 +90,13 @@ const AssetsEditor = (props:IAssetsEditorProps) => {
     return (
         <Box padding={2} height="100%" display="table" width="100%">
             {!isEditing && (
-                <Button color="primary" variant="contained" sx={{marginY:2}} onClick={handleUpdateClicked}>
+                <Button color="primary" variant="contained" sx={{marginBottom:2}} onClick={handleUpdateClicked}>
                     Update
                 </Button>
             )}
             {isEditing && (
                 <form onSubmit={formik.handleSubmit}>
-                    <Stack direction="row" spacing={2} sx={{marginY:2}}>
+                    <Stack direction="row" spacing={2} sx={{marginBottom:2}}>
                         <Button color="error" variant="outlined" onClick={handleCancelClicked}>
                             Cancel
                         </Button>
@@ -109,64 +109,79 @@ const AssetsEditor = (props:IAssetsEditorProps) => {
                     <FormikProvider value={formik}>
                         <FieldArray name="assets">
                             {({ insert, remove, push }) => (
-                                <Grid container spacing={2} padding={2}>
-                                    {formik.values.assets.map((asset:any, index:any) => (
-                                        <Grid item xs={12} key={index}>
-                                            <Grid container spacing={2} wrap="nowrap">
+                                <Box display="flex" flexDirection="column" padding={2} gap={2}>
+                                    {formik.values.assets.map((asset:any, index:any) => {
+                                        const name = `assets.${index}.name`
+                                        const touchedName = getIn(formik.touched, name)
+                                        const errorName = getIn(formik.errors, name)
+
+                                        const value = `assets.${index}.value`
+                                        const touchedValue = getIn(formik.touched, value)
+                                        const errorValue = getIn(formik.errors, value)
+                                        return (
+                                            <Box display="flex" gap={2}>
                                                 <Field
                                                     type="hidden"
                                                     name={`assets.${index}.id`}
                                                 />
-                                                <Grid item flexGrow={4}>
-                                                    <Field
-                                                        name={`assets.${index}.name`}
-                                                        placeholder="Asset Name"
-                                                        as={TextField}
-                                                        label="Name"
-                                                        disabled={!isEditing}
-                                                    />
-                                                </Grid>
-                                                <Grid item flexGrow={2}>
-                                                    <Field
-                                                        name={`assets.${index}.value`}
-                                                        placeholder="Asset Value"
-                                                        as={TextField}
-                                                        label="Value"
-                                                        type="number"
-                                                        disabled={!isEditing}
-                                                    />
-                                                </Grid>
-                                                <Grid item alignSelf="center" flexGrow={0}>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Field
-                                                                label="Liquid"
-                                                                name={`assets.${index}.isLiquid`}
-                                                                as={Switch}
-                                                                checked={formik.values.assets[index].isLiquid}
-                                                                disabled={!isEditing}
-                                                            />
-                                                        }
-                                                        label="Liquid"
-                                                        labelPlacement="top"
-                                                    />
-                                                </Grid>
+                                                <TextField
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    name={name}
+                                                    value={asset.name}
+                                                    label="Name"
+                                                    helperText={
+                                                        touchedName && errorName
+                                                            ? errorName
+                                                            : ""
+                                                    }
+                                                    error={Boolean(touchedName && errorName)}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
+                                                <TextField
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    name={value}
+                                                    value={asset.value}
+                                                    label="Value"
+                                                    helperText={
+                                                        touchedValue && errorValue
+                                                            ? errorValue
+                                                            : ""
+                                                    }
+                                                    error={Boolean(touchedValue && errorValue)}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
+                                                <FormControlLabel
+                                                    sx={{alignSelf:"flex-start"}}
+                                                    control={
+                                                        <Field
+                                                            label="Liquid"
+                                                            name={`assets.${index}.isLiquid`}
+                                                            as={Switch}
+                                                            checked={formik.values.assets[index].isLiquid}
+                                                            disabled={!isEditing}
+                                                        />
+                                                    }
+                                                    label="Liquid"
+                                                    labelPlacement="top"
+                                                />
                                                 {isEditing && (
-                                                    <Grid item flexGrow={0} alignSelf="center">
-                                                        <Fab size="small" color="error" onClick={() => remove(index)}>
-                                                            <Clear />
-                                                        </Fab>
-                                                    </Grid>
+                                                    <Fab size="small" color="error" onClick={() => remove(index)}>
+                                                        <Clear />
+                                                    </Fab>
                                                 )}
-                                            </Grid>
-                                        </Grid>
-                                    ))}
-                                    <Grid item xs={12}>
+                                            </Box>
+                                        )
+                                    })}
+                                    <Box display="flex">
                                         <Button color="primary" variant="outlined" disabled={!isEditing} onClick={() => push({ name: '', value: 0 })}>
                                             Add
                                         </Button>
-                                    </Grid>
-                                </Grid>
+                                    </Box>
+                                </Box>
                             )}
                         </FieldArray>
                     </FormikProvider>
