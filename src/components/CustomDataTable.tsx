@@ -24,6 +24,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
     const [sorting, setSorting] = useState<{ column: string, order: 'asc' | 'desc' }>({column:"", order:"asc"})
     const [sortedData, setSortedData] = useState<any[]>([])
 
+    //sorting
     useEffect(() => {
         let col = ""
         if (sorting.column === "") {
@@ -48,6 +49,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
     }
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        props.setSelectedRow(null)
         setPage(newPage);
     };
     
@@ -78,7 +80,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
 
     return (
         <TableContainer component={Paper} sx={{height:"100%"}}>
-            <Table size="small">
+            <Table size="small" stickyHeader>
                 <TableHead>
                     <TableRow>
                         {props.isSelectable && (
@@ -98,7 +100,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedData.map((item, index) => (
+                    {sortedData.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((item, index) => (
                         <TableRow key={index}>
                             {props.isSelectable && (
                                 <TableCell padding="checkbox">
@@ -145,11 +147,11 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                         </TableRow>
                     ))}
                 </TableBody>
-                {/* <TableFooter>
+                <TableFooter>
                     <TableRow>
                         <TablePagination
-                            rowsPerPageOptions={[5, 10, { label: 'All', value: -1 }]}
-                            colSpan={3}
+                            rowsPerPageOptions={[5, 10, { label: 'All', value: props.tableData.length }]}
+                            colSpan={props.columns.length + (props.isSelectable ? 1 : 0)}
                             count={props.tableData.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
@@ -157,7 +159,7 @@ const CustomDataTable = (props:ICustomDataTableProps) => {
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                     </TableRow>
-                </TableFooter> */}
+                </TableFooter>
             </Table>
         </TableContainer>
     )

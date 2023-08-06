@@ -73,6 +73,18 @@ export const calculateTotalRecurringIncome = (recurringIncomes:any) => {
     return parseFloat(newTotalRecurringIncome.toFixed(2))
 }
 
+export const calculateTotalRecurringInvestments = (recurringInvestments:any) => {
+    let newTotalRecurringInvestments = 0
+    if (recurringInvestments.length > 0) {
+        newTotalRecurringInvestments = recurringInvestments.reduce((prev:any, next:any) => {
+            let nextValue = getNextValue(next)
+            return prev + nextValue
+        }, 0)
+    }
+    
+    return parseFloat(newTotalRecurringInvestments.toFixed(2))
+}
+
 export const calculateTotalRecurringExpenses = (recurringExpenses:any) => {
     let newTotalRecurringExpenses = 0
     if (recurringExpenses.length > 0) {

@@ -28,6 +28,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import DailySpendingChart from "../components/Dashboard/DailySpendingChart";
 import BudgetsOverview from "../components/Dashboard/BudgetsOverview";
 import NetWorthOverview from "../components/Dashboard/NetWorthOverview";
+import SavingsOverview from "../components/Dashboard/SavingsOverview";
 
 
 const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -39,6 +40,7 @@ const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [recurringIncomes, setRecurringIncomes] = useState<any[]>([])
+    const [recurringInvestments, setRecurringInvestments] = useState<any[]>([])
     const [recurringExpenses, setRecurringExpenses] = useState<any[]>([])
     const [userMetadata, setUserMetadata] = useState<any | null | undefined>(null)
     const [expenses, setExpenses] = useState<any[]>([])
@@ -60,9 +62,10 @@ const Dashboard = () => {
             const lastDay = new Date()
             lastDay.setDate(date.getDate())
     
-            const [userMetadataRes, recurringIncomeRes, recurringExpensesRes, expensesRes, assetsRes, debtsRes] = await Promise.all([
+            const [userMetadataRes, recurringIncomeRes, recurringInvestmentsRes, recurringExpensesRes, expensesRes, assetsRes, debtsRes] = await Promise.all([
                 axios.get(`/api/v1/Users`),
                 axios.get(`/api/v1/RecurringIncomes`),
+                axios.get(`/api/v1/RecurringInvestments`),
                 axios.get(`/api/v1/RecurringExpenses`),
                 axios.get(`/api/v1/Expenses`, {
                     params: {
@@ -76,6 +79,7 @@ const Dashboard = () => {
     
             const userMetadata = userMetadataRes.data
             const recurringIncome = recurringIncomeRes.data
+            const recurringInvestments = recurringInvestmentsRes.data
             const recurringExpenses = recurringExpensesRes.data
             const expenses = expensesRes.data
             const assets = assetsRes.data
@@ -83,6 +87,7 @@ const Dashboard = () => {
 
             setUserMetadata(userMetadata)
             setRecurringIncomes(recurringIncome)
+            setRecurringInvestments(recurringInvestments)
             setRecurringExpenses(recurringExpenses)
             setExpenses(expenses)
             setAssets(assets)
@@ -106,19 +111,29 @@ const Dashboard = () => {
         return (
             <Grid container padding={4} height="100%" spacing={2}>
                 <Grid item xs={8}>
-                    <Box display="flex" flexDirection="column" gap={2} height="100%">
-                        <Box flexGrow={0}>
-                            <Paper sx={{padding:2, height:"100%"}}>
-                                <BudgetsOverview
-                                    userMetadata={userMetadata}
-                                    recurringIncomes={recurringIncomes}
-                                    recurringExpenses={recurringExpenses}
-                                    expenses={expenses}
-                                />
-                            </Paper>
+                    <Box display="flex" flexDirection="column" gap={2} height="100%" justifyContent="space-between">
+                        <Box flexGrow={1}>
+                            <Box display="flex" gap={2} height="100%">
+                                <Paper sx={{padding:2, flexGrow:1}}>
+                                    <SavingsOverview
+                                        recurringIncomes={recurringIncomes}
+                                        recurringInvestments={recurringInvestments}
+                                        recurringExpenses={recurringExpenses}
+                                        expenses={recurringExpenses}
+                                    />
+                                </Paper>
+                                <Paper sx={{padding:2, flexGrow:1}}>
+                                    <BudgetsOverview
+                                        userMetadata={userMetadata}
+                                        recurringIncomes={recurringIncomes}
+                                        recurringExpenses={recurringExpenses}
+                                        expenses={expenses}
+                                    />
+                                </Paper>
+                            </Box>
                         </Box>
                         <Box flexGrow={2}>
-                            <Box display="flex" gap={2}>
+                            <Box display="flex" gap={2} height="100%">
                                 <Paper sx={{padding:2, flexGrow:1}}>
                                     <DailySpendingChart expenses={expenses} />
                                 </Paper>

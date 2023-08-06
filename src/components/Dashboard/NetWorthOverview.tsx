@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { calculateAssetsValues, calculateDebtsAmount, calculateNetWorth } from "../../tools/valueCalculators"
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Divider, Stack, Typography } from "@mui/material"
 import { currencyFormatter } from "../../tools/currencyFormatter"
 
 interface INetWorthOverviewProps {
@@ -30,27 +30,46 @@ const NetWorthOverview = (props:INetWorthOverviewProps) => {
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-evenly" height="100%">
-            <Stack>
-                <Typography variant="body1">
+            <Stack spacing={1}>
+                <Typography variant="h6">
                     Net Worth
                 </Typography>
-                <Typography variant="h4">
+                <Divider />
+                <Typography variant="h3" fontWeight="bold">
                     {currencyFormatter(netWorth)}
                 </Typography>
             </Stack>
-            <Stack>
-                <Typography variant="body1">
+            <Stack spacing={1}>
+                <Typography variant="h6">
                     Assets
                 </Typography>
-                <Typography variant="h4">
+                <Divider />
+                <Typography variant="h4" fontWeight="bold">
                     {currencyFormatter(totalAssetsValue)}
                 </Typography>
+                <Stack>
+                    <Typography variant="subtitle2">
+                        Liquid
+                    </Typography>
+                    <Typography variant="h5" fontWeight="bold">
+                        {currencyFormatter(totalLiquidAssetsValue)}
+                    </Typography>
+                </Stack>
+                <Stack>
+                    <Typography variant="subtitle2">
+                        Non-Liquid
+                    </Typography>
+                    <Typography variant="h5" fontWeight="bold">
+                        {currencyFormatter(totalNonLiquidAssetsValue)}
+                    </Typography>
+                </Stack>
             </Stack>
-            <Stack>
-                <Typography variant="body1">
+            <Stack spacing={1}>
+                <Typography variant="h6">
                     Debts
                 </Typography>
-                <Typography variant="h4">
+                <Divider />
+                <Typography variant="h4" fontWeight="bold">
                     {currencyFormatter(totalDebtsAmount)}
                 </Typography>
             </Stack>
