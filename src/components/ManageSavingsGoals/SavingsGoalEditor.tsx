@@ -67,7 +67,7 @@ const SavingsGoalEditor = (props:ISavingsGoalEditorProps) => {
         <Box display="flex" flexDirection="column" alignItems="center">
             <Box width="100%" display="flex" justifyContent="space-between">
                 <Typography variant="h6">
-                    Monthly Savings Goal
+                    Liquid Monthly Savings Goal
                 </Typography>
                 <Stack direction="row" spacing={2}>
                     {!props.isEditing && (
