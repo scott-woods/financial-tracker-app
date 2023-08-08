@@ -28,16 +28,16 @@ const BudgetsOverview = (props:IBudgetsOverviewProps) => {
     const monthlyCircleTextRef = useRef<HTMLInputElement>(null)
     const dailyCircleRef = useRef<HTMLInputElement | null>(null)
     const dailyCircleTextRef = useRef<HTMLInputElement>(null)
-    const [monthlyFontSize, setMonthlyFontSize] = useState(16)
-    const [dailyFontSize, setDailyFontSize] = useState(16)
+    const [monthlyFontSize, setMonthlyFontSize] = useState(100)
+    const [dailyFontSize, setDailyFontSize] = useState(100)
 
     useEffect(() => {
         const containerWidth = monthlyCircleRef.current?.offsetWidth
         const textWidth = monthlyCircleTextRef.current?.offsetWidth
 
         if (textWidth && containerWidth) {
-            if (textWidth > (containerWidth * .8)) {
-                const newFontSize = ((containerWidth * .8) / textWidth) * monthlyFontSize
+            if (textWidth > (containerWidth * .75)) {
+                const newFontSize = ((containerWidth * .75) / textWidth) * monthlyFontSize
                 setMonthlyFontSize(newFontSize)
             }
         }
@@ -48,8 +48,8 @@ const BudgetsOverview = (props:IBudgetsOverviewProps) => {
         const textWidth = dailyCircleTextRef.current?.offsetWidth
 
         if (textWidth && containerWidth) {
-            if (textWidth > (containerWidth * .8)) {
-                const newFontSize = ((containerWidth * .8) / textWidth) * dailyFontSize
+            if (textWidth > (containerWidth * .75)) {
+                const newFontSize = ((containerWidth * .75) / textWidth) * dailyFontSize
                 setDailyFontSize(newFontSize)
             }
         }
@@ -77,6 +77,9 @@ const BudgetsOverview = (props:IBudgetsOverviewProps) => {
     
     return (
         <Stack height="100%">
+            <Typography variant="h6">
+                Budgets
+            </Typography>
             <Box display="flex" justifyContent="space-evenly" alignItems="center" height="100%">
                 <Box display="flex" flexDirection="column" alignItems="center" width="25%" gap={1} ref={monthlyCircleRef}>
                     <CircularProgressbarWithChildren

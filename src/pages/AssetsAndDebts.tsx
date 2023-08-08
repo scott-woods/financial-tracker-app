@@ -137,7 +137,7 @@ const AssetsAndDebts = () => {
     }
     else {
         return (
-            <Grid container padding={4} height="100%">
+            <Grid container padding={3} height="100%">
                 <Grid item xs={5} paddingRight={1}>
                     <Stack height="100%" spacing={2}>
                         <Paper sx={{padding:2}}>

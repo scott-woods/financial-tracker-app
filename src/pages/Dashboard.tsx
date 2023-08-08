@@ -109,55 +109,95 @@ const Dashboard = () => {
     }
     else {
         return (
-            <Grid container padding={4} height="100%" spacing={2}>
-                <Grid item xs={9}>
-                    <Box display="flex" flexDirection="column" gap={2} height="100%" justifyContent="space-between">
-                        <Box flexGrow={1}>
-                            <Box display="flex" gap={2} height="100%">
-                                <Paper sx={{padding:2, flexGrow:1}}>
-                                    <SavingsOverview
-                                        recurringIncomes={recurringIncomes}
-                                        recurringInvestments={recurringInvestments}
-                                        recurringExpenses={recurringExpenses}
-                                        expenses={recurringExpenses}
-                                    />
-                                </Paper>
-                                <Paper sx={{padding:2, flexGrow:1}}>
-                                    <BudgetsOverview
-                                        userMetadata={userMetadata}
-                                        recurringIncomes={recurringIncomes}
-                                        recurringExpenses={recurringExpenses}
-                                        expenses={expenses}
-                                    />
-                                </Paper>
-                            </Box>
-                        </Box>
-                        <Box flexGrow={2}>
-                            <Box display="flex" gap={2} height="100%">
-                                <Paper sx={{padding:2, flexGrow:1}}>
-                                    <DailySpendingChart
-                                        expenses={expenses}
-                                        recurringIncomes={recurringIncomes}
-                                        recurringExpenses={recurringExpenses}
-                                        userMetadata={userMetadata}
-                                    />
-                                </Paper>
-                                <Paper sx={{padding:2, flexGrow:0}}>
-                                    <RecentExpenses expenses={expenses} setExpenses={setExpenses} />
-                                </Paper>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid item xs={3}>
-                    <Paper sx={{padding:2, height:"100%"}}>
+            <Grid container padding={3} spacing={3}>
+                <Grid item xs={12} md={12} lg={3} xl={3} display="flex" flexDirection="column" gap={3}>
+                    <Paper sx={{padding:2}}>
                         <NetWorthOverview
                             assets={assets}
                             debts={debts}
                         />
                     </Paper>
+                    <Paper sx={{padding:2}}>
+                        <RecentExpenses expenses={expenses} setExpenses={setExpenses} />
+                    </Paper>
+                    <Paper sx={{padding:2}}>
+                        <SavingsOverview
+                            recurringIncomes={recurringIncomes}
+                            recurringInvestments={recurringInvestments}
+                            recurringExpenses={recurringExpenses}
+                            expenses={expenses}
+                        />
+                    </Paper>
                 </Grid>
+                <Grid item xs={12} md={12} lg={9} xl={9} display="flex" flexDirection="column" gap={3}>
+                    <Paper sx={{padding:2}}>
+                        <BudgetsOverview
+                            userMetadata={userMetadata}
+                            recurringIncomes={recurringIncomes}
+                            recurringExpenses={recurringExpenses}
+                            expenses={expenses}
+                        />
+                    </Paper>
+                    <Paper sx={{padding:2, height:"50vh"}}>
+                        <DailySpendingChart
+                            expenses={expenses}
+                            recurringIncomes={recurringIncomes}
+                            recurringExpenses={recurringExpenses}
+                            userMetadata={userMetadata}
+                        />
+                    </Paper>
+                </Grid>
+                
             </Grid>
+            // <Grid container padding={4} height="100%" spacing={2}>
+            //     <Grid item xs={9}>
+            //         <Box display="flex" flexDirection="column" gap={2} height="100%" justifyContent="space-between">
+            //             <Box flexGrow={1}>
+            //                 <Box display="flex" gap={2} height="100%">
+            //                     <Paper sx={{padding:2, flexGrow:1}}>
+            //                         <SavingsOverview
+            //                             recurringIncomes={recurringIncomes}
+            //                             recurringInvestments={recurringInvestments}
+            //                             recurringExpenses={recurringExpenses}
+            //                             expenses={recurringExpenses}
+            //                         />
+            //                     </Paper>
+            //                     <Paper sx={{padding:2, flexGrow:1}}>
+            //                         <BudgetsOverview
+            //                             userMetadata={userMetadata}
+            //                             recurringIncomes={recurringIncomes}
+            //                             recurringExpenses={recurringExpenses}
+            //                             expenses={expenses}
+            //                         />
+            //                     </Paper>
+            //                 </Box>
+            //             </Box>
+            //             <Box flexGrow={2}>
+            //                 <Box display="flex" gap={2} height="100%">
+            //                     <Paper sx={{padding:2, flexGrow:1}}>
+            //                         <DailySpendingChart
+            //                             expenses={expenses}
+            //                             recurringIncomes={recurringIncomes}
+            //                             recurringExpenses={recurringExpenses}
+            //                             userMetadata={userMetadata}
+            //                         />
+            //                     </Paper>
+            //                     <Paper sx={{padding:2, flexGrow:0}}>
+            //                         <RecentExpenses expenses={expenses} setExpenses={setExpenses} />
+            //                     </Paper>
+            //                 </Box>
+            //             </Box>
+            //         </Box>
+            //     </Grid>
+            //     <Grid item xs={3}>
+            //         <Paper sx={{padding:2, height:"100%"}}>
+            //             <NetWorthOverview
+            //                 assets={assets}
+            //                 debts={debts}
+            //             />
+            //         </Paper>
+            //     </Grid>
+            // </Grid>
             // <Box display="flex" flexDirection="column" padding={4} gap={2} overflow="auto">
             //     <Grid container spacing={2}>
             //         <Grid item xs={7}>

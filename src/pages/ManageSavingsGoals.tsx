@@ -65,7 +65,7 @@ const ManageSavingsGoals = () => {
     }
     else {
         return (
-            <Grid container padding={4} gap={2}>
+            <Grid container padding={3} gap={2}>
                 <Grid item xs={12}>
                     <Paper sx={{padding:2}}>
                         <SavingsGoalEditor

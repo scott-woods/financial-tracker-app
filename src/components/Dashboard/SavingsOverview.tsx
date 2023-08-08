@@ -28,28 +28,31 @@ const SavingsOverview = (props:ISavingsOverviewProps) => {
     }, [props.recurringIncomes, props.recurringInvestments, props.recurringExpenses, props.expenses])
 
     return (
-        <Box display="flex" flexDirection="column" justifyContent="space-evenly">
+        <Box display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h6">
+                Monthly Savings
+            </Typography>
             <Stack>
-                <Typography variant="subtitle1" fontStyle="italic" noWrap>
-                    Your Income this Month
+                <Typography variant="h6" fontWeight="lighter">
+                    Income
                 </Typography>
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant="body1" fontWeight="bold">
                     {currencyFormatter(totalRecurringIncome)}
                 </Typography>
             </Stack>
             <Stack>
-                <Typography variant="subtitle1" fontStyle="italic" noWrap>
-                    Your Investments this Month
+                <Typography variant="h6" fontWeight="lighter">
+                    Investments
                 </Typography>
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant="body1" fontWeight="bold">
                     {currencyFormatter(totalRecurringInvestments)}
                 </Typography>
             </Stack>
             <Stack>
-                <Typography variant="subtitle1" fontStyle="italic" noWrap>
-                    Your Expenses this Month
+                <Typography variant="h6" fontWeight="lighter">
+                    Expenses
                 </Typography>
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant="body1" fontWeight="bold">
                     {currencyFormatter(totalRecurringExpenses)}
                 </Typography>
             </Stack>
