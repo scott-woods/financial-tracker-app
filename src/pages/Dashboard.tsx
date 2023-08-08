@@ -110,7 +110,7 @@ const Dashboard = () => {
     else {
         return (
             <Grid container padding={4} height="100%" spacing={2}>
-                <Grid item xs={8}>
+                <Grid item xs={9}>
                     <Box display="flex" flexDirection="column" gap={2} height="100%" justifyContent="space-between">
                         <Box flexGrow={1}>
                             <Box display="flex" gap={2} height="100%">
@@ -149,7 +149,7 @@ const Dashboard = () => {
                         </Box>
                     </Box>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <Paper sx={{padding:2, height:"100%"}}>
                         <NetWorthOverview
                             assets={assets}
