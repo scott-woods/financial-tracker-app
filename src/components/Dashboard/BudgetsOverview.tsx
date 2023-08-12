@@ -28,31 +28,15 @@ const BudgetsOverview = (props:IBudgetsOverviewProps) => {
     const monthlyCircleTextRef = useRef<HTMLInputElement>(null)
     const dailyCircleRef = useRef<HTMLInputElement | null>(null)
     const dailyCircleTextRef = useRef<HTMLInputElement>(null)
-    const [monthlyFontSize, setMonthlyFontSize] = useState(100)
-    const [dailyFontSize, setDailyFontSize] = useState(100)
+    const [monthlyFontSize, setMonthlyFontSize] = useState(0)
+    const [dailyFontSize, setDailyFontSize] = useState(0)
 
     useEffect(() => {
-        const containerWidth = monthlyCircleRef.current?.offsetWidth
-        const textWidth = monthlyCircleTextRef.current?.offsetWidth
-
-        if (textWidth && containerWidth) {
-            if (textWidth > (containerWidth * .75)) {
-                const newFontSize = ((containerWidth * .75) / textWidth) * monthlyFontSize
-                setMonthlyFontSize(newFontSize)
-            }
-        }
+        resizeMonthlyText()
     }, [remainingMonthlyBudget])
 
     useEffect(() => {
-        const containerWidth = dailyCircleRef.current?.offsetWidth
-        const textWidth = dailyCircleTextRef.current?.offsetWidth
-
-        if (textWidth && containerWidth) {
-            if (textWidth > (containerWidth * .75)) {
-                const newFontSize = ((containerWidth * .75) / textWidth) * dailyFontSize
-                setDailyFontSize(newFontSize)
-            }
-        }
+        resizeDailyText()
     }, [remainingDailyBudget])
 
     useEffect(() => {
@@ -74,6 +58,79 @@ const BudgetsOverview = (props:IBudgetsOverviewProps) => {
         setRemainingDailyBudget(newRemainingDailyBudget)
         setExpensesThisMonth(newExpensesThisMonth)
     }, [props.userMetadata, props.recurringIncomes, props.recurringExpenses, props.expenses])
+
+    const resizeMonthlyText = () => {
+        const containerWidth = monthlyCircleRef.current?.offsetWidth
+        if (containerWidth) {
+            let desiredWidth = containerWidth * .75
+            const newFontSize = (desiredWidth / (currencyFormatter(remainingMonthlyBudget).length))
+            const tempElement = document.createElement('span')
+            tempElement.textContent = currencyFormatter(remainingMonthlyBudget)
+            tempElement.style.fontSize = `${newFontSize}px`
+            tempElement.style.visibility = "hidden"
+            document.body.appendChild(tempElement)
+            const actualWidth = tempElement.offsetWidth
+            document.body.removeChild(tempElement)
+
+            if (actualWidth !== desiredWidth) {
+                const updatedFontSize = newFontSize * (desiredWidth / actualWidth)
+                setMonthlyFontSize(updatedFontSize)
+            }
+            else {
+                setMonthlyFontSize(newFontSize)
+            }
+        }
+
+        // const containerWidth = monthlyCircleRef.current?.offsetWidth
+        // const textWidth = monthlyCircleTextRef.current?.offsetWidth
+
+        // if (textWidth && containerWidth) {
+        //     if (textWidth > (containerWidth * .75)) {
+        //         const newFontSize = ((containerWidth * .75) / textWidth) * monthlyFontSize
+        //         setMonthlyFontSize(newFontSize)
+        //     }
+        // }
+    }
+
+    window.onresize = () => {
+        resizeMonthlyText()
+        resizeDailyText()
+    }
+
+    const resizeDailyText = () => {
+        const containerWidth = dailyCircleRef.current?.offsetWidth
+        if (containerWidth) {
+            let desiredWidth = containerWidth * .75
+            const newFontSize = (desiredWidth / (currencyFormatter(remainingDailyBudget).length))
+            const tempElement = document.createElement('span')
+            tempElement.textContent = currencyFormatter(remainingDailyBudget)
+            tempElement.style.fontSize = `${newFontSize}px`
+            tempElement.style.visibility = "hidden"
+            document.body.appendChild(tempElement)
+            const actualWidth = tempElement.offsetWidth
+            document.body.removeChild(tempElement)
+
+            if (actualWidth !== desiredWidth) {
+                const updatedFontSize = newFontSize * (desiredWidth / actualWidth)
+                setDailyFontSize(updatedFontSize)
+            }
+            else {
+                setDailyFontSize(newFontSize)
+            }
+        }
+
+        // const containerWidth = dailyCircleRef.current?.offsetWidth
+        // const textWidth = dailyCircleTextRef.current?.offsetWidth
+
+        // if (textWidth && containerWidth) {
+        //     const newFontSize = ((containerWidth * .75) / textWidth)
+        //     setDailyFontSize(newFontSize)
+        //     if (textWidth > (containerWidth * .75)) {
+        //         const newFontSize = ((containerWidth * .75) / textWidth) * dailyFontSize
+        //         setDailyFontSize(newFontSize)
+        //     }
+        // }
+    }
     
     return (
         <Stack height="100%">
