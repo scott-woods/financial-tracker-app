@@ -14,7 +14,7 @@ const audience = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 const AuthRequired = () => {
     
     const [accessToken, setAccessToken] = useState()
-    const [isAuthLoading, setIsAuthLoading] = useState(false)
+    const [isAuthLoading, setIsAuthLoading] = useState(true)
 
     const { isAuthenticated, isLoading, user, getAccessTokenSilently, loginWithRedirect } = useAuth0();
 

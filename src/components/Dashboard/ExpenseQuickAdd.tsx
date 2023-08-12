@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import axios from "axios"
 import { timeframes } from "../../timeframes"
 import { useEffect } from "react"
+import CurrencyInput from "../CurrencyInput"
 
 
 interface IExpenseQuickAddProps {
@@ -116,7 +117,19 @@ const ExpenseQuickAdd = (props:IExpenseQuickAddProps) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
+                            <CurrencyInput
+                                fullWidth
+                                variant="outlined"
+                                id="amount"
+                                name="amount"
+                                label="Amount"
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.amount && Boolean(formik.errors.amount)}
+                                helperText={formik.touched.amount && formik.errors.amount}
+                                onChange={formik.handleChange}
+                                value={formik.values.amount}
+                            />
+                            {/* <TextField
                                 fullWidth
                                 variant="outlined"
                                 type="number"
@@ -128,7 +141,7 @@ const ExpenseQuickAdd = (props:IExpenseQuickAddProps) => {
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.amount && Boolean(formik.errors.amount)}
                                 helperText={formik.touched.amount && formik.errors.amount}
-                            />
+                            /> */}
                         </Grid>
                     </Grid>
                 </DialogContent>

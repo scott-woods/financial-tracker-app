@@ -1,8 +1,8 @@
 import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
-import CurrencyInput from "react-currency-input-field";
 import { timeframes } from "../../timeframes";
+import CurrencyInput from "../CurrencyInput";
 
 interface IAddEditIncomeFormFieldsProps {
     income?: any
@@ -11,21 +11,6 @@ interface IAddEditIncomeFormFieldsProps {
 }
 
 const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
-
-    //const [amountValue, setAmountValue] = useState("")
-
-    const handleAmountChanged = (event:any) => {
-        // let inputValue = event.target.value
-        // let numericValue = parseFloat(inputValue)
-
-        // if (numericValue) {
-        //     numericValue = numericValue / 100
-        //     alert(numericValue)
-        //     const formattedValue = numericValue.toFixed(2)
-        //     setAmountValue(formattedValue)
-        //     //props.formik.setFieldValue("amount", formattedValue)
-        // }
-    }
     
     return (
         <Grid container padding={2} spacing={4}>
@@ -44,18 +29,19 @@ const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                {/* <CurrencyInput
-                    allowNegativeValue={false}
-                    fixedDecimalLength={2}
-                    value={props.formik.values.amount}
-                    onValueChange={props.formik.handleChange}
-                    prefix="$"
-                    disableAbbreviations={true}
-                    maxLength={12}
+                <CurrencyInput
+                    fullWidth
+                    variant="outlined"
                     id="amount"
                     name="amount"
-                /> */}
-                <TextField
+                    label="Amount"
+                    onBlur={props.formik.handleBlur}
+                    error={props.formik.touched.amount && Boolean(props.formik.errors.amount)}
+                    helperText={props.formik.touched.amount && props.formik.errors.amount}
+                    onChange={props.formik.handleChange}
+                    value={props.formik.values.amount}
+                />
+                {/* <TextField
                     fullWidth
                     variant="outlined"
                     type="number"
@@ -71,7 +57,7 @@ const AddEditIncomeFormFields = (props:IAddEditIncomeFormFieldsProps) => {
                     onBlur={props.formik.handleBlur}
                     error={props.formik.touched.amount && Boolean(props.formik.errors.amount)}
                     helperText={props.formik.touched.amount && props.formik.errors.amount}
-                />
+                /> */}
             </Grid>
             <Grid item xs={12}>
                 <TextField

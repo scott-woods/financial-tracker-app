@@ -5,6 +5,7 @@ import ConfirmDeleteModal from "../ConfirmDeleteModal"
 import axios from "axios"
 import { Clear } from "@mui/icons-material"
 import * as Yup from "yup";
+import CurrencyInput from "../CurrencyInput"
 
 interface IAssetsEditorProps {
     assets: IAssetFields[]
@@ -139,7 +140,23 @@ const AssetsEditor = (props:IAssetsEditorProps) => {
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                 />
-                                                <TextField
+                                                <CurrencyInput
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    variant="outlined"
+                                                    name={value}
+                                                    label="Value"
+                                                    onBlur={formik.handleBlur}
+                                                    error={Boolean(touchedValue && errorValue)}
+                                                    helperText={
+                                                        touchedValue && errorValue
+                                                            ? errorValue
+                                                            : ""
+                                                    }
+                                                    onChange={formik.handleChange}
+                                                    value={asset.value}
+                                                />
+                                                {/* <TextField
                                                     sx={{flexGrow:1}}
                                                     disabled={!isEditing}
                                                     name={value}
@@ -153,7 +170,7 @@ const AssetsEditor = (props:IAssetsEditorProps) => {
                                                     error={Boolean(touchedValue && errorValue)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                />
+                                                /> */}
                                                 <FormControlLabel
                                                     sx={{alignSelf:"flex-start"}}
                                                     control={
