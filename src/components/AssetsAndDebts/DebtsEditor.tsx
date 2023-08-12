@@ -4,6 +4,7 @@ import axios from "axios"
 import { Field, FieldArray, FormikProvider, getIn, useFormik } from "formik"
 import { useEffect, useState } from "react"
 import * as Yup from "yup";
+import CurrencyInput from "../CurrencyInput";
 
 interface IDebtsEditorProps {
     debts: any[]
@@ -136,7 +137,23 @@ const DebtsEditor = (props:IDebtsEditorProps) => {
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                 />
-                                                <TextField
+                                                <CurrencyInput
+                                                    sx={{flexGrow:1}}
+                                                    disabled={!isEditing}
+                                                    variant="outlined"
+                                                    name={amount}
+                                                    label="Amount"
+                                                    onBlur={formik.handleBlur}
+                                                    error={Boolean(touchedAmount && errorAmount)}
+                                                    helperText={
+                                                        touchedAmount && errorAmount
+                                                            ? errorAmount
+                                                            : ""
+                                                    }
+                                                    onChange={formik.handleChange}
+                                                    value={debt.amount}
+                                                />
+                                                {/* <TextField
                                                     sx={{flexGrow:1}}
                                                     disabled={!isEditing}
                                                     name={amount}
@@ -150,7 +167,7 @@ const DebtsEditor = (props:IDebtsEditorProps) => {
                                                     error={Boolean(touchedAmount && errorAmount)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                />
+                                                /> */}
                                                 {isEditing && (
                                                     <Fab size="small" color="error" onClick={() => remove(index)}>
                                                         <Clear />

@@ -59,7 +59,7 @@ const LayoutSideBar = () => {
                             <ListItemIcon>
                                 <Flag />
                             </ListItemIcon>
-                            <ListItemText sx={{wordWrap:"break-word"}} primary="Manage Savings Goals" />
+                            <ListItemText sx={{wordWrap:"break-word"}} primary="Savings Goals" />
                         </ListItemButton>
                     </MenuItem>
                 </List>

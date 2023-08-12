@@ -7,6 +7,7 @@ import { currencyFormatter } from "../tools/currencyFormatter";
 import AssetsAndDebtsEditor from "../components/AssetsAndDebts/AssetsAndDebtsEditor";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Loading from "../components/Loading";
+import NetWorthOverview from "../components/Dashboard/NetWorthOverview";
 
 
 const AssetsAndDebts = () => {
@@ -137,55 +138,38 @@ const AssetsAndDebts = () => {
     }
     else {
         return (
-            <Grid container padding={4} height="100%">
-                <Grid item xs={5} paddingRight={1}>
-                    <Stack height="100%" spacing={2}>
-                        <Paper sx={{padding:2}}>
-                            <Stack>
-                                <Typography variant="h5">
-                                    Net Worth
-                                </Typography>
-                                <Typography variant="h3" fontWeight="bold">
-                                    {currencyFormatter(netWorth)}
-                                </Typography>
-                                <Typography variant="subtitle1" fontWeight="light" marginTop={2}>
-                                    Assets
-                                </Typography>
-                                <Typography variant="h5">
-                                    {currencyFormatter(totalAssetsValue)}
-                                </Typography>
-                                <Typography variant="subtitle1" fontWeight="light" marginTop={2}>
-                                    Debts
-                                </Typography>
-                                <Typography variant="h5">
-                                    {currencyFormatter(totalDebtsAmount)}
-                                </Typography>
-                            </Stack>
-                        </Paper>
-                        <Paper sx={{height:"100%"}}>
-                            <Stack height="100%">
-                                <Box height="100%" padding={2}>
-                                    <ResponsiveContainer height="100%" width="100%">
-                                        <LineChart
-                                            data={chartData}
-                                            margin={{left:20}}
-                                        >
-                                            <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="date" hide={true} />
-                                            <YAxis tickFormatter={(value) => currencyFormatter(value)} />
-                                            <Tooltip separator=": " formatter={(value) => currencyFormatter(value as number)} />
-                                            <Legend />
-                                            <Line type="monotone" dataKey="netWorth" name="Net Worth" stroke="#11d935" />
-                                            <Line type="monotone" dataKey="totalAssets" name="Assets" stroke="#3511d9" />
-                                            <Line type="monotone" dataKey="totalDebts" name="Debts" stroke="#d93511" />
-                                        </LineChart>
-                                    </ResponsiveContainer>
-                                </Box>
-                            </Stack>
-                        </Paper>
-                    </Stack>
+            <Grid container padding={3} spacing={3}>
+                <Grid item xs={12} md={12} lg={6} xl={6} display="flex" flexDirection="column" gap={3}>
+                    <Paper sx={{padding:2}}>
+                        <NetWorthOverview
+                            assets={assets}
+                            debts={debts}
+                        />
+                    </Paper>
+                    <Paper sx={{padding:2, height:"50vh"}}>
+                        <Box display="flex" flexDirection="column" height="100%" gap={2}>
+                            <Typography variant="h6">
+                                Net Worth Trends
+                            </Typography>
+                            <ResponsiveContainer>
+                                <LineChart
+                                    data={chartData}
+                                    margin={{left:20}}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="date" hide={true} />
+                                    <YAxis tickFormatter={(value) => currencyFormatter(value)} />
+                                    <Tooltip separator=": " formatter={(value) => currencyFormatter(value as number)} />
+                                    <Legend />
+                                    <Line type="monotone" dataKey="netWorth" name="Net Worth" stroke="#11d935" />
+                                    <Line type="monotone" dataKey="totalAssets" name="Assets" stroke="#3511d9" />
+                                    <Line type="monotone" dataKey="totalDebts" name="Debts" stroke="#d93511" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </Box>
+                    </Paper>
                 </Grid>
-                <Grid item xs={7} paddingLeft={1}>
+                <Grid item xs={12} md={12} lg={6} xl={6} display="flex" flexDirection="column" gap={3}>
                     <Paper sx={{height:'100%'}}>
                         <AssetsAndDebtsEditor
                             assets={assets}

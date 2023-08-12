@@ -1,5 +1,6 @@
 import { Grid, TextField, MenuItem, FormControlLabel, Switch } from "@mui/material"
 import { timeframes } from "../../timeframes"
+import CurrencyInput from "../CurrencyInput"
 
 
 interface IAddEditInvestmentFormFieldsProps {
@@ -24,7 +25,19 @@ const AddEditInvestmentFormFields = (props:IAddEditInvestmentFormFieldsProps) =>
                 />
             </Grid>
             <Grid item xs={12}>
-                <TextField
+                <CurrencyInput
+                    fullWidth
+                    variant="outlined"
+                    id="amount"
+                    name="amount"
+                    label="Amount"
+                    onBlur={props.formik.handleBlur}
+                    error={props.formik.touched.amount && Boolean(props.formik.errors.amount)}
+                    helperText={props.formik.touched.amount && props.formik.errors.amount}
+                    onChange={props.formik.handleChange}
+                    value={props.formik.values.amount}
+                />
+                {/* <TextField
                     fullWidth
                     variant="outlined"
                     type="number"
@@ -36,7 +49,7 @@ const AddEditInvestmentFormFields = (props:IAddEditInvestmentFormFieldsProps) =>
                     onBlur={props.formik.handleBlur}
                     error={props.formik.touched.amount && Boolean(props.formik.errors.amount)}
                     helperText={props.formik.touched.amount && props.formik.errors.amount}
-                />
+                /> */}
             </Grid>
             <Grid item xs={12}>
                 <TextField

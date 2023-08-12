@@ -1,7 +1,8 @@
 import { Box, Button, Input, Slider, Stack, TextField, Typography } from "@mui/material";
 import { currencyFormatter } from "../../tools/currencyFormatter";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import CurrencyInput from "../CurrencyInput";
 
 
 interface ISavingsGoalEditorProps {
@@ -15,7 +16,25 @@ interface ISavingsGoalEditorProps {
     setIsEditing:any
 }
 
+const FONT_SIZE = 16
+const DEFAULT_INPUT_WIDTH = 0
+
 const SavingsGoalEditor = (props:ISavingsGoalEditorProps) => {
+
+    const [textValue, setTextValue] = useState("")
+    const [inputWidth, setInputWidth] = useState(DEFAULT_INPUT_WIDTH)
+
+    useEffect(() => {
+        let newTextValue = props.savingsGoal.toFixed(2).toString()
+        if ((newTextValue.length - 2) * FONT_SIZE > DEFAULT_INPUT_WIDTH) {
+            setInputWidth((newTextValue.length - 2) * FONT_SIZE)
+        }
+        else {
+            setInputWidth(DEFAULT_INPUT_WIDTH)
+        }
+
+        setTextValue(newTextValue)
+    }, [props.savingsGoal])
 
     const getMax = () => {
         return props.totalRecurringIncome - props.totalRecurringExpenses
@@ -31,6 +50,10 @@ const SavingsGoalEditor = (props:ISavingsGoalEditorProps) => {
 
     const handleSavingsGoalChange = (event: Event, value:any, activeThumb:number) => {
         props.setSavingsGoal(value)
+    }
+
+    const handleSavingsGoalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        props.setSavingsGoal(event.target.value)
     }
 
     const handleUpdateClicked = () => {
@@ -67,7 +90,7 @@ const SavingsGoalEditor = (props:ISavingsGoalEditorProps) => {
         <Box display="flex" flexDirection="column" alignItems="center">
             <Box width="100%" display="flex" justifyContent="space-between">
                 <Typography variant="h6">
-                    Monthly Savings Goal
+                    Liquid Monthly Savings Goal
                 </Typography>
                 <Stack direction="row" spacing={2}>
                     {!props.isEditing && (
@@ -90,17 +113,28 @@ const SavingsGoalEditor = (props:ISavingsGoalEditorProps) => {
             <Typography variant="h1" fontWeight="bold">
                 {currencyFormatter(props.savingsGoal)}
             </Typography>
-            <Slider
-                sx={{width:"50%"}}
-                disabled={!props.isEditing}
-                min={0}
-                max={getMax()}
-                step={getStep()}
-                value={props.savingsGoal}
-                onChange={handleSavingsGoalChange}
-                defaultValue={500}
-                valueLabelDisplay="auto"
-            />
+            <Box width="50%" position="relative">
+                <Slider
+                    disabled={!props.isEditing}
+                    min={0}
+                    max={getMax()}
+                    step={getStep()}
+                    value={props.savingsGoal}
+                    onChange={handleSavingsGoalChange}
+                    defaultValue={500}
+                    valueLabelDisplay="auto"
+                />
+                <Box display={!props.isEditing ? "none" : "block"} position="absolute" top={0} left="104%" width="100%">
+                    <CurrencyInput
+                        customInput={Input}
+                        sx={{width:`${inputWidth}px`, fontSize:`${FONT_SIZE}px`}}
+                        size="small"
+                        variant="standard"
+                        onChange={handleSavingsGoalInputChange}
+                        value={props.savingsGoal}
+                    />
+                </Box>
+            </Box>
         </Box>
     )
 }

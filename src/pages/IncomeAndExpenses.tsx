@@ -61,7 +61,7 @@ const IncomeAndExpenses = () => {
     }
     else {
         return (
-            <Stack spacing={2} padding={4} sx={{height:'100%'}}>
+            <Stack spacing={3} padding={3} sx={{height:'100%'}}>
                 <Box>
                     <IncomeAndExpensesOverview
                     recurringIncomeList={recurringIncomeList}
