@@ -22,7 +22,7 @@ const AuthRequired = () => {
         if (isAuthenticated) {
             setAuthHeader()
         }
-        else if (!isLoading && !isAuthLoading) {
+        else if (!isLoading) {
             loginWithRedirect()
         }
     }, [isAuthenticated, isLoading])
